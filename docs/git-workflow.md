@@ -1,0 +1,239 @@
+# FlowMind Git Workflow
+
+## 1. 목적
+
+이 문서는 FlowMind 프로젝트의 Git 브랜치 전략과 작업 흐름을 정의한다.
+
+목표는 다음과 같다.
+
+- `main` 브랜치를 항상 완성본 상태로 유지
+- 기능 개발은 독립 브랜치에서 안전하게 진행
+- `dev` 브랜치에서 기능 통합과 통합 테스트 수행
+- 커밋 이력을 기능 중심으로 관리
+
+## 2. 브랜치 구조
+
+FlowMind는 아래 브랜치 구조를 기본으로 사용한다.
+
+- `main`
+- `dev`
+- `feat/*`
+- 선택 사항: `fix/*`, `docs/*`, `refactor/*`
+
+## 3. 브랜치별 역할
+
+### `main`
+
+`main`은 최종 완성본 브랜치다.
+
+- 항상 배포 가능하거나 포트폴리오 제출 가능한 상태를 유지한다
+- 직접 개발 작업을 하지 않는다
+- 충분히 검증된 결과만 반영한다
+- 최종 반영은 직접 판단해서 진행한다
+
+즉, `main`은 작업 브랜치가 아니라 결과 브랜치다.
+
+### `dev`
+
+`dev`는 기능 통합 브랜치다.
+
+- 각 기능 브랜치의 결과를 모은다
+- 통합 테스트의 기준선 역할을 한다
+- 여러 기능이 함께 동작하는지 확인한다
+- 다음 릴리스 후보 상태를 유지한다
+
+즉, `dev`는 일상적인 개발의 중심 브랜치다.
+
+### `feat/*`
+
+`feat/*` 브랜치는 기능 개발용 브랜치다.
+
+- 기능 하나당 브랜치 하나를 사용한다
+- 가능한 한 작업 범위를 작고 명확하게 유지한다
+- 개발이 끝날 때까지 `dev`와 분리된 상태로 작업한다
+
+예:
+
+- `feat/phase1-backend-bootstrap`
+- `feat/phase2-intent-classifier`
+- `feat/phase2-session-context`
+- `feat/phase3-llm-fallback`
+- `feat/phase4-analytics-dashboard`
+
+### 선택 브랜치
+
+필요하면 아래 브랜치도 사용한다.
+
+- `fix/*`: 버그 수정
+- `docs/*`: 문서 작업
+- `refactor/*`: 동작 변경 없는 구조 개선
+
+예:
+
+- `fix/dispatch-null-session`
+- `docs/project-overview`
+- `refactor/prompt-service-split`
+
+## 4. 기본 작업 흐름
+
+기능 개발은 아래 순서로 진행한다.
+
+1. `dev` 최신 상태를 기준으로 작업 시작
+2. 새로운 기능 브랜치 생성
+3. 기능 단위로 개발
+4. 작은 단위로 커밋하고 원격에 푸시
+5. 기능이 완료되면 `dev`에 반영
+6. `dev`에서 통합 테스트 수행
+7. 충분히 안정화된 시점에만 `main`에 반영
+
+이 흐름의 핵심은 `main`을 개발 공간으로 쓰지 않는 것이다.
+
+## 5. 브랜치 생성 규칙
+
+새 기능은 항상 `dev`에서 분기한다.
+
+예시:
+
+```bash
+git checkout dev
+git pull origin dev
+git checkout -b feat/phase2-intent-classifier
+```
+
+중요 원칙:
+
+- `main`에서 직접 `feat/*`를 따지 않는다
+- 오래된 `dev` 상태에서 브랜치를 만들지 않는다
+- 하나의 브랜치에 여러 기능을 섞지 않는다
+
+## 6. 커밋 규칙
+
+커밋은 작업 일지처럼 남기지 않고, 기능 단위로 의미 있게 남긴다.
+
+좋은 커밋의 기준:
+
+- 한 커밋이 하나의 변화 목적을 가진다
+- 나중에 봐도 무엇을 바꿨는지 이해할 수 있다
+- 너무 큰 덩어리 커밋을 피한다
+
+### 추천 커밋 타입
+
+- `feat`
+- `fix`
+- `docs`
+- `refactor`
+- `test`
+- `chore`
+
+### 예시
+
+- `feat: add intent entity model`
+- `feat: implement dispatch route selection`
+- `feat: add session context persistence`
+- `fix: handle missing conversation state`
+- `docs: add project overview`
+- `refactor: split prompt selection service`
+- `test: add dispatcher integration test`
+
+## 7. 커밋 단위 원칙
+
+아래처럼 자르는 것을 권장한다.
+
+좋은 예:
+
+- 엔티티 추가
+- 레포지토리 추가
+- 서비스 로직 추가
+- API 엔드포인트 추가
+- 테스트 추가
+
+좋지 않은 예:
+
+- 모델, 서비스, 테스트, 문서, UI를 한 커밋에 모두 섞음
+- 관련 없는 버그 수정과 새 기능을 한 번에 커밋
+
+즉, 커밋은 "작업한 순서"보다 "의미 있는 변화 단위"로 잘라야 한다.
+
+## 8. 머지 기준
+
+`feat/*` 브랜치를 `dev`에 반영하기 전에 최소한 아래를 만족해야 한다.
+
+- 로컬 실행 가능
+- 관련 기능이 정상 동작
+- 명백한 에러 로그 없음
+- 브랜치 목적과 무관한 변경 없음
+- 필요한 경우 테스트 추가 완료
+
+### `dev`에 머지할 수 있는 상태
+
+- 기능 하나가 끝까지 동작한다
+- 중간 상태가 아니라 확인 가능한 결과가 있다
+- 다른 기능과 합쳐도 큰 충돌이 없을 것으로 보인다
+
+### `main`에 반영할 수 있는 상태
+
+- `dev`에서 충분히 검증되었다
+- 데모 또는 배포 기준을 만족한다
+- 문서와 기본 설명이 정리되어 있다
+
+## 9. 금지 규칙
+
+아래는 기본적으로 하지 않는다.
+
+- `main`에서 직접 개발
+- 기능 개발 중인 브랜치를 무분별하게 `main`에 반영
+- 하나의 `feat/*` 브랜치에 서로 다른 기능 누적
+- 검증되지 않은 코드를 `dev`에 바로 반영
+- 의미 없는 대형 커밋 생성
+
+## 10. 권장 브랜치 보호 정책
+
+가능하면 원격 저장소에서 아래 정책을 설정한다.
+
+### `main`
+
+- 직접 push 금지
+- 보호 브랜치 설정
+- 최종 반영만 허용
+
+### `dev`
+
+- 직접 push 최소화
+- 기능 브랜치 기반 반영 권장
+- 통합 테스트 이후 반영
+
+## 11. FlowMind에 맞는 이유
+
+이 프로젝트는 단순 CRUD가 아니라 아래 성격을 가진다.
+
+- 백엔드와 프론트가 같이 움직인다
+- 규칙 기반 엔진과 LLM fallback이 함께 존재한다
+- 문서와 설계 변경도 자주 발생한다
+
+그래서 작업 흐름이 정리되어 있지 않으면 쉽게 꼬인다.
+
+`main / dev / feat-*` 구조를 쓰면 다음 장점이 있다.
+
+- `main`을 항상 안정 상태로 유지할 수 있다
+- 기능별 개발 이력이 깔끔하게 남는다
+- `dev`에서 실제 통합 동작을 검증할 수 있다
+- 포트폴리오용으로 구현 과정을 설명하기 쉽다
+
+## 12. 추천 초기 기능 브랜치 예시
+
+프로젝트 시작 시 아래와 같이 나누는 것이 적절하다.
+
+- `feat/phase1-backend-bootstrap`
+- `feat/phase1-frontend-bootstrap`
+- `feat/phase1-docker-compose`
+- `feat/phase2-intent-domain-model`
+- `feat/phase2-dispatch-api`
+- `feat/phase2-scenario-executor`
+- `feat/phase3-prompt-template`
+- `feat/phase3-llm-fallback`
+- `feat/phase4-analytics-core`
+- `docs/architecture-and-roadmap`
+
+## 13. 한 문장으로 정리
+
+FlowMind의 Git 전략은 `feat 브랜치에서 기능 단위로 개발하고`, `dev에서 통합 검증한 뒤`, `main에는 직접 선택한 완성본만 올리는 구조`다.

@@ -1,0 +1,74 @@
+# FlowMind 페이즈 로드맵
+
+## Phase 1. Foundation
+
+목표는 개발 가능한 기본 골격을 만드는 것이다.
+
+- 모노리포 구조 정리
+- Spring Boot / React 초기 프로젝트 생성
+- PostgreSQL / Redis / Flyway / Docker Compose 설정
+- 공통 문서 정리
+
+완료 기준:
+
+- 로컬에서 프론트와 백엔드가 함께 실행된다
+- DB 마이그레이션이 자동 적용된다
+- 기본 API와 기본 화면이 뜬다
+
+## Phase 2. Deterministic Core
+
+목표는 규칙 기반 대화 처리의 최소 완성본을 만드는 것이다.
+
+- Intent / Utterance / Entity 모델 정의
+- SessionContext 및 슬롯 유지
+- Scenario / Node / Edge 모델 정의
+- Dispatch API 구현
+- 대표 시나리오 1개 완성
+
+완료 기준:
+
+- 명확한 사용자 요청 1개 이상이 시나리오로 끝까지 처리된다
+- 필요한 슬롯이 누락되면 시스템이 후속 질문을 한다
+
+## Phase 3. Hybrid Routing
+
+목표는 low-confidence 요청을 LLM으로 안정적으로 넘기는 것이다.
+
+- PromptTemplate 관리
+- Prompt augmentation
+- OpenAI Responses API 연동
+- structured output 계약
+- fallback reason 로깅
+
+완료 기준:
+
+- 애매한 요청이 LLM route로 전달된다
+- 어떤 프롬프트와 모델이 사용됐는지 로그에 남는다
+
+## Phase 4. Ops & Analytics
+
+목표는 운영자가 시스템을 개선할 수 있게 만드는 것이다.
+
+- route ratio
+- fallback rate
+- 평균 응답시간
+- 사용자 평점
+- unmatched utterance 수집
+
+완료 기준:
+
+- 운영자가 실패 지점과 개선 대상을 식별할 수 있다
+
+## Phase 5. Productization
+
+목표는 포트폴리오와 데모 관점에서 완성도를 높이는 것이다.
+
+- Vercel 프론트 배포
+- 백엔드 배포
+- README / ARCHITECTURE / API 문서 보완
+- 데모 시나리오와 샘플 데이터 준비
+
+완료 기준:
+
+- 외부에서 접속 가능한 데모가 존재한다
+- 프로젝트 목적과 구조가 문서만으로 이해된다
