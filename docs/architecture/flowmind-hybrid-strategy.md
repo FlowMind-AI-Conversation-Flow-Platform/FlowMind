@@ -1,13 +1,13 @@
-# ConvoForge Hybrid Strategy
+# FlowMind Hybrid Strategy
 
-## Objective
+## 목적
 
-ConvoForge should optimize both deterministic automation and generative flexibility in one platform.
+FlowMind는 하나의 플랫폼 안에서 `결정론적 자동화`와 `생성형 유연성`을 함께 최적화해야 한다.
 
-- `Intent layer`: rule-based, measurable, operationally safe
-- `LLM layer`: flexible fallback for ambiguity, complaints, and unexpected phrasing
+- `Intent layer`: 규칙 기반, 측정 가능, 운영 통제가 쉬운 영역
+- `LLM layer`: 애매한 표현, 불만, 예외 발화에 대응하는 유연한 fallback 영역
 
-The platform should treat prompt engineering and context engineering as separate concerns with a shared dispatcher.
+이 플랫폼은 `Prompt Engineering`과 `Context Engineering`을 분리하되, `Dispatcher`가 둘을 연결하는 구조를 가져야 한다.
 
 ## System Model
 

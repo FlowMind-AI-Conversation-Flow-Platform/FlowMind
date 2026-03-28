@@ -1,19 +1,23 @@
 # FlowMind 페이즈 로드맵
 
+이 문서는 상위 요약 로드맵이다.
+각 phase의 상세 실행 문서는 [PHASES.md](/C:/Users/ggg99/Desktop/FlowMind/FlowMind/docs/planning/PHASES.md)와 `docs/planning/phases/` 아래에서 관리한다.
+
 ## Phase 1. Foundation
 
 목표는 개발 가능한 기본 골격을 만드는 것이다.
 
 - 모노리포 구조 정리
-- Spring Boot / React 초기 프로젝트 생성
+- Spring Boot 백엔드 초기 프로젝트 생성
+- 프론트엔드는 문서/관리 화면 수준으로 최소 골격만 준비
 - PostgreSQL / Redis / Flyway / Docker Compose 설정
 - 공통 문서 정리
 
 완료 기준:
 
-- 로컬에서 프론트와 백엔드가 함께 실행된다
+- 로컬에서 백엔드가 우선 실행된다
 - DB 마이그레이션이 자동 적용된다
-- 기본 API와 기본 화면이 뜬다
+- 기본 API가 응답한다
 
 ## Phase 2. Deterministic Core
 
@@ -34,7 +38,8 @@
 
 목표는 low-confidence 요청을 LLM으로 안정적으로 넘기는 것이다.
 
-- PromptTemplate 관리
+- prompt file 기반 템플릿 관리 도입
+- 필요 시 prompt_template 테이블로 확장 가능한 구조 준비
 - Prompt augmentation
 - OpenAI Responses API 연동
 - structured output 계약

@@ -292,7 +292,7 @@ FlowMind에서는 응답 그 자체보다 "왜 이 경로로 갔는가"가 중�
 - 대표 시나리오 1~2개
 - 슬롯 수집 가능한 흐름 1개
 - LLM fallback 1개
-- PromptTemplate 관리 최소 기능
+- prompt file 기반 템플릿 관리 최소 기능
 - 대화 로그 저장
 - 기본 Analytics 3~4개 지표
 
