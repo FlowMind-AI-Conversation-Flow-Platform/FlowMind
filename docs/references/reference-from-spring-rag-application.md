@@ -133,7 +133,7 @@ FlowMind에도 이 원칙은 매우 잘 맞는다.
 - 어떤 입력이 fallback을 과도하게 유발하는가
 - 어떤 prompt 버전에서 품질이 나빠졌는가
 
-즉, FlowMind에서는 `conversation_log` 외에 `dispatch_trace` 성격의 구조도 나중에 고려할 가치가 있다.
+즉, FlowMind에서는 `conversation_log` 외에 `dispatch_trace`를 MVP부터 저장 대상으로 두는 것이 좋다.
 
 ## 7. 모델 접근 추상화
 
