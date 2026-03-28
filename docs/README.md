@@ -52,6 +52,9 @@ FlowMind의 `docs/`는 하네스 엔지니어링 관점에서 repository knowled
 - [planning/phases/phase-1/plan-01-project-bootstrap.md](/C:/Users/ggg99/Desktop/FlowMind/FlowMind/docs/planning/phases/phase-1/plan-01-project-bootstrap.md)
   - phase 1 세부 계획 01
 
+- [planning/phases/phase-1/design-bootstrap.md](/C:/Users/ggg99/Desktop/FlowMind/FlowMind/docs/planning/phases/phase-1/design-bootstrap.md)
+  - phase 1 bootstrap 설계 선택지
+
 - [planning/phases/phase-1/plan-02-runtime-config.md](/C:/Users/ggg99/Desktop/FlowMind/FlowMind/docs/planning/phases/phase-1/plan-02-runtime-config.md)
   - phase 1 세부 계획 02
 

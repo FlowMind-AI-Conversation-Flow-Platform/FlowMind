@@ -26,6 +26,7 @@ FlowMind는 세 가지 축으로 동작합니다.
 - 현재 저장소는 `하네스 엔지니어링` 방식에 맞춰 문서 중심으로 먼저 구조를 고도화한 상태입니다.
 - `AGENT.md`는 짧은 허브 문서이며, 실제 system of record는 `docs/`입니다.
 - 큰 작업은 `execution plan`과 `phase 문서`로 관리합니다.
+- 현재 구현 착수 기준은 `Phase 1 > Project Bootstrap`까지 구체화된 상태입니다.
 
 ## 문서 구조
 
@@ -58,6 +59,13 @@ FlowMind는 세 가지 축으로 동작합니다.
 8. [docs/planning/rapeech-execution-plan.md](/C:/Users/ggg99/Desktop/FlowMind/FlowMind/docs/planning/rapeech-execution-plan.md)
 9. [docs/references/reference-from-spring-rag-application.md](/C:/Users/ggg99/Desktop/FlowMind/FlowMind/docs/references/reference-from-spring-rag-application.md)
 
+## 지금 바로 보면 좋은 문서
+
+- [AGENT.md](/C:/Users/ggg99/Desktop/FlowMind/FlowMind/AGENT.md)
+- [docs/planning/PHASES.md](/C:/Users/ggg99/Desktop/FlowMind/FlowMind/docs/planning/PHASES.md)
+- [docs/planning/phases/phase-1/plan-01-project-bootstrap.md](/C:/Users/ggg99/Desktop/FlowMind/FlowMind/docs/planning/phases/phase-1/plan-01-project-bootstrap.md)
+- [docs/planning/exec-plans/active/spring-boot-foundation.md](/C:/Users/ggg99/Desktop/FlowMind/FlowMind/docs/planning/exec-plans/active/spring-boot-foundation.md)
+
 ## MVP 범위
 
 초기 구현은 아래 범위에 집중합니다.
@@ -76,6 +84,16 @@ FlowMind는 세 가지 축으로 동작합니다.
 - 큰 작업은 `docs/planning/exec-plans/active/` 아래 execution plan으로 남깁니다.
 - phase 단위 작업은 `docs/planning/phases/` 아래에서 관리합니다.
 - 사용자 승인 전에는 탐색과 계획 수립까지만 진행합니다.
+
+## 현재 착수 기준
+
+현재 기준에서 실제 구현 착수는 아래 문서를 기준으로 시작합니다.
+
+1. [docs/planning/phases/phase-1/plan-01-project-bootstrap.md](/C:/Users/ggg99/Desktop/FlowMind/FlowMind/docs/planning/phases/phase-1/plan-01-project-bootstrap.md)
+2. [docs/planning/phases/phase-1/design-bootstrap.md](/C:/Users/ggg99/Desktop/FlowMind/FlowMind/docs/planning/phases/phase-1/design-bootstrap.md)
+3. [docs/planning/exec-plans/active/spring-boot-foundation.md](/C:/Users/ggg99/Desktop/FlowMind/FlowMind/docs/planning/exec-plans/active/spring-boot-foundation.md)
+
+이 세 문서가 맞물려 `Phase 기준`, `설계 선택`, `실행 계획`을 분리합니다.
 
 ## 개발 원칙
 
