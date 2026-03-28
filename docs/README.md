@@ -110,3 +110,6 @@ FlowMind의 `docs/`는 하네스 엔지니어링 관점에서 repository knowled
 
 - [guides/git-workflow.md](/C:/Users/ggg99/Desktop/FlowMind/FlowMind/docs/guides/git-workflow.md)
   - 브랜치 및 협업 규칙
+
+- [guides/contribution-templates.md](/C:/Users/ggg99/Desktop/FlowMind/FlowMind/docs/guides/contribution-templates.md)
+  - 이슈, PR, 커밋 템플릿 사용 규칙
