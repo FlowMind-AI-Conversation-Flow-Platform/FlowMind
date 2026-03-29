@@ -1,0 +1,37 @@
+# FlowMind Backend
+
+Phase 1 bootstrap for the FlowMind backend.
+
+## Requirements
+
+- Java 21
+- Gradle 8.x or the generated Gradle wrapper
+
+## Run
+
+```powershell
+cd backend
+.\gradlew.bat bootRun
+```
+
+## Verify
+
+```powershell
+Invoke-WebRequest http://localhost:8080/api/health
+Invoke-WebRequest http://localhost:8080/actuator/health
+.\gradlew.bat test
+```
+
+## Environment variables
+
+- `FLOWMIND_SERVER_PORT`
+- `FLOWMIND_DB_URL`
+- `FLOWMIND_DB_USERNAME`
+- `FLOWMIND_DB_PASSWORD`
+- `FLOWMIND_DB_ENABLED`
+- `FLOWMIND_FLYWAY_ENABLED`
+- `FLOWMIND_REDIS_ENABLED`
+- `FLOWMIND_OPENAI_ENABLED`
+
+The bootstrap defaults are set to start without requiring a live database connection.
+
