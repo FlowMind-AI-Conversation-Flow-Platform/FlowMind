@@ -1,0 +1,60 @@
+spring:
+  application:
+    name: flowmind-backend
+  datasource:
+    url: ${FLOWMIND_DB_URL:jdbc:postgresql://localhost:5432/flowmind}
+    username: ${FLOWMIND_DB_USERNAME:flowmind}
+    password: ${FLOWMIND_DB_PASSWORD:flowmind}
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      initialization-fail-timeout: 0
+      connection-timeout: 2000
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: none
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    properties:
+      hibernate:
+        boot:
+          allow_jdbc_metadata_access: false
+  flyway:
+    enabled: ${FLOWMIND_FLYWAY_ENABLED:false}
+    locations: classpath:db/migration
+  data:
+    redis:
+      host: ${FLOWMIND_REDIS_HOST:localhost}
+      port: ${FLOWMIND_REDIS_PORT:6379}
+      timeout: 2s
+
+server:
+  port: ${FLOWMIND_SERVER_PORT:8080}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      probes:
+        enabled: true
+      show-details: always
+  health:
+    db:
+      enabled: ${FLOWMIND_DB_ENABLED:false}
+
+logging:
+  level:
+    root: INFO
+    com.flowmind: INFO
+
+flowmind:
+  application-name: FlowMind Backend
+  integration:
+    redis-enabled: ${FLOWMIND_REDIS_ENABLED:false}
+    openai-enabled: ${FLOWMIND_OPENAI_ENABLED:false}
+  storage:
+    database-enabled: ${FLOWMIND_DB_ENABLED:false}
+    flyway-enabled: ${FLOWMIND_FLYWAY_ENABLED:false}
+
