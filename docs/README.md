@@ -110,3 +110,29 @@ FlowMind의 `docs/`는 하네스 엔지니어링 관점에서 repository knowled
 
 - [guides/git-workflow.md](/C:/Users/ggg99/Desktop/FlowMind/FlowMind/docs/guides/git-workflow.md)
   - 브랜치 및 협업 규칙
+
+- [guides/contribution-templates.md](/C:/Users/ggg99/Desktop/FlowMind/FlowMind/docs/guides/contribution-templates.md)
+  - 이슈, PR, 커밋 템플릿 사용 규칙
+
+## 7. 포트폴리오 자료
+
+- [portfolio/README.md](/C:/Users/ggg99/Desktop/FlowMind/FlowMind/docs/portfolio/README.md)
+  - 포트폴리오 전용 문서 인덱스
+
+- [portfolio/project-summary.md](/C:/Users/ggg99/Desktop/FlowMind/FlowMind/docs/portfolio/project-summary.md)
+  - 프로젝트 요약과 문제 정의
+
+- [portfolio/tech-decisions.md](/C:/Users/ggg99/Desktop/FlowMind/FlowMind/docs/portfolio/tech-decisions.md)
+  - 기술 선택 이유와 트레이드오프
+
+- [portfolio/implementation-evidence.md](/C:/Users/ggg99/Desktop/FlowMind/FlowMind/docs/portfolio/implementation-evidence.md)
+  - 나중에 반드시 남겨야 할 구현 증빙
+
+- [portfolio/interview-points.md](/C:/Users/ggg99/Desktop/FlowMind/FlowMind/docs/portfolio/interview-points.md)
+  - 면접 설명 포인트
+
+- [portfolio/resume-bullets.md](/C:/Users/ggg99/Desktop/FlowMind/FlowMind/docs/portfolio/resume-bullets.md)
+  - 이력서용 bullet 초안
+
+- [portfolio/portfolio-checklist.md](/C:/Users/ggg99/Desktop/FlowMind/FlowMind/docs/portfolio/portfolio-checklist.md)
+  - 포트폴리오 최종 점검표

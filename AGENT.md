@@ -69,6 +69,13 @@
 - `Intent + Scenario + LLM fallback`을 먼저 끝까지 동작시킨다.
 - prompt file 기반 템플릿 관리와 `dispatch_trace` 저장을 초기에 반영한다.
 
+## 템플릿 사용 규칙
+
+- 기능 작업은 가능하면 이슈 템플릿부터 작성한다.
+- PR 작성 시 저장소의 PR 템플릿을 기준으로 작성한다.
+- 커밋 메시지는 `.gitmessage.txt` 형식을 따른다.
+- phase 문서와 execution plan이 있는 작업은 이슈와 PR에 반드시 연결한다.
+
 ## 승인 전 금지 항목
 
 - 파일 생성 및 수정

@@ -135,6 +135,15 @@ git checkout -b feat/phase2-intent-classifier
 - `refactor: split prompt selection service`
 - `test: add dispatcher integration test`
 
+### 커밋 템플릿
+
+저장소 루트의 `.gitmessage.txt`를 기본 커밋 메시지 템플릿으로 사용한다.
+
+권장 형식:
+
+- 첫 줄: `type: 제목`
+- 본문: 변경 이유 / 주요 변경 / 영향 범위 / 검증
+
 ## 7. 커밋 단위 원칙
 
 아래처럼 자르는 것을 권장한다.
@@ -175,6 +184,17 @@ git checkout -b feat/phase2-intent-classifier
 - `dev`에서 충분히 검증되었다
 - 데모 또는 배포 기준을 만족한다
 - 문서와 기본 설명이 정리되어 있다
+
+## 8-1. 이슈 / PR 템플릿
+
+저장소의 `.github/ISSUE_TEMPLATE/`와 `.github/pull_request_template.md`를 사용한다.
+
+기능 또는 문서 작업은 아래를 권장한다.
+
+- 이슈 생성
+- 관련 phase 문서 및 execution plan 연결
+- 작업 브랜치 생성
+- 템플릿 기준 PR 작성
 
 ## 9. 금지 규칙
 
