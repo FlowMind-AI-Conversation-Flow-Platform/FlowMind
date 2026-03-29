@@ -73,16 +73,21 @@
 - 스키마나 의존성 추가가 필요한 경우
 - 예상보다 작업 범위가 커지는 경우
 
+현재 기준 예시:
+
+- `Phase 2` 작업 중 `OpenAI SDK`까지 넣으려면 재승인 대상
+- 단순 문서 최신화에서 execution plan 이동까지 포함되면 범위 재확인 권장
+
 ## 권장 작업 단위
 
 작업 단위는 가능한 한 작게 유지한다.
 
 좋은 예:
 
-- Spring Boot 골격 생성
 - dispatch API 스펙 정의
 - billing inquiry 시나리오 1개 구현
 - LLM gateway 추가
+- Phase 상태 문서 최신화
 
 좋지 않은 예:
 

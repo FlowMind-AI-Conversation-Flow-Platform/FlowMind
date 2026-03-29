@@ -22,6 +22,7 @@
 - Java 백엔드 구조를 설명할 수 있다
 - 대화 모델링 능력을 보여줄 수 있다
 - LLM을 단순 호출이 아니라 시스템 구성 요소로 다룬다는 점을 설명할 수 있다
+- 문서 설계에 그치지 않고 Spring Boot bootstrap과 health 검증까지 실제 구현했다는 점을 보여줄 수 있다
 
 ## 5. 예상 질문
 
@@ -36,3 +37,4 @@
 - 비용, 일관성, 통제 가능성
 - deterministic flow와 generative flow의 역할 분리
 - 운영 데이터 기반 개선 루프
+- bootstrap 단계에서 왜 DB 비활성 기본 정책과 health 검증을 먼저 맞췄는지

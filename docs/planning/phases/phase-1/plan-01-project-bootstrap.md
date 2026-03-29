@@ -11,7 +11,11 @@ FlowMind 백엔드 프로젝트의 기본 뼈대를 만든다.
 이 문서는 `phase 관점`에서 bootstrap의 범위와 기준을 정의한다.
 실제 이번 작업의 실행 단위는 아래 execution plan과 연결한다.
 
-- [spring-boot-foundation.md](/C:/Users/ggg99/Desktop/FlowMind/FlowMind/docs/planning/exec-plans/active/spring-boot-foundation.md)
+- [spring-boot-foundation.md](/C:/Users/ggg99/Desktop/FlowMind/FlowMind/docs/planning/exec-plans/completed/spring-boot-foundation.md)
+- 구현 결과:
+  - `backend/` Spring Boot 프로젝트 생성 완료
+  - Gradle wrapper 포함
+  - health endpoint 및 actuator health 확인 완료
 
 ## 범위
 
@@ -139,12 +143,11 @@ Windows 환경에서는 `gradlew.bat` 기준으로 대응한다.
 
 ## 보완 필요 항목
 
-- `com.flowmind` 패키지로 확정할지 최종 결정
-- 루트 Gradle과 backend 단일 Gradle 중 어느 쪽으로 시작할지 결정
-- backend 단독 README 또는 개발 가이드 필요 여부 판단
-- actuator 사용 여부 확정
+- deterministic core 진입 시 패키지 확장 기준
+- DB / Redis 실제 연결 시점
+- local profile 분리 여부
 
 ## 다음 연결 문서
 
 - [design-bootstrap.md](/C:/Users/ggg99/Desktop/FlowMind/FlowMind/docs/planning/phases/phase-1/design-bootstrap.md)
-- [spring-boot-foundation.md](/C:/Users/ggg99/Desktop/FlowMind/FlowMind/docs/planning/exec-plans/active/spring-boot-foundation.md)
+- [spring-boot-foundation.md](/C:/Users/ggg99/Desktop/FlowMind/FlowMind/docs/planning/exec-plans/completed/spring-boot-foundation.md)

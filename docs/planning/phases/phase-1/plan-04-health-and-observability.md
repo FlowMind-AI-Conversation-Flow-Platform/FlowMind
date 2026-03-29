@@ -21,6 +21,12 @@ Health and Observability
 - 기본 로그 출력이 확인된다
 - 이후 observability 구조로 연결될 최소 규칙이 정리된다
 
+## 현재 반영 상태
+
+- `GET /api/health` 커스텀 endpoint를 추가했다
+- actuator health를 노출하고 기본 검증에 사용했다
+- DB 비활성 기본 환경에서도 health가 `UP`으로 응답하도록 bootstrap 정책을 반영했다
+
 ## 리스크
 
 - 현재 단계에서 observability를 과하게 설계할 위험
@@ -28,6 +34,6 @@ Health and Observability
 
 ## 보완 필요 항목
 
-- actuator 도입 여부
 - 로그 포맷 정책
 - trace id 도입 시점
+- `dispatch_trace` 저장 지점 정의

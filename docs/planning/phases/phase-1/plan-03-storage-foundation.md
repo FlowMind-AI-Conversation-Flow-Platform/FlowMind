@@ -21,6 +21,12 @@ PostgreSQL, Redis, Flyway 기반 저장소 골격을 준비한다.
 - Flyway migration 경로가 정리된다
 - Redis 사용 목적이 명확히 문서화된다
 
+## 현재 반영 상태
+
+- PostgreSQL datasource 기본 키와 driver 설정이 추가됐다
+- Flyway migration 경로와 baseline migration 파일이 추가됐다
+- Redis는 설정 자리만 열어두고 기본 비활성 상태로 유지한다
+
 ## 리스크
 
 - Redis를 너무 일찍 도입하면 MVP가 느려질 수 있음

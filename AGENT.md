@@ -28,6 +28,13 @@
 - [docs/README.md](./docs/README.md)
 - [docs/planning/PLANS.md](./docs/planning/PLANS.md)
 
+## 현재 작업 기준점
+
+- `Phase 1 > Project Bootstrap`은 구현 완료 상태다
+- 현재 기준 구현 베이스는 `backend/` Spring Boot bootstrap이다
+- 다음 우선순위는 `Phase 2 > Deterministic Core`다
+- 실행 계획 문서는 active/completed 상태를 구분해서 본다
+
 ## 작업 유형별 컨텍스트
 
 ### 방향과 범위
@@ -53,6 +60,7 @@
 
 - [docs/operations/QUALITY_SCORE.md](./docs/operations/QUALITY_SCORE.md)
 - [docs/planning/exec-plans/active/README.md](./docs/planning/exec-plans/active/README.md)
+- [docs/planning/exec-plans/completed/README.md](./docs/planning/exec-plans/completed/README.md)
 - [docs/planning/templates/execution-plan-template.md](./docs/planning/templates/execution-plan-template.md)
 
 ### 협업 규칙
@@ -66,6 +74,7 @@
 - FlowMind는 하이브리드 대화 플랫폼이다.
 - 초기 MVP는 백엔드 중심이다.
 - Java/Spring Boot가 우선이다.
+- 현재 저장소에는 Spring Boot bootstrap이 이미 반영돼 있다.
 - `Intent + Scenario + LLM fallback`을 먼저 끝까지 동작시킨다.
 - prompt file 기반 템플릿 관리와 `dispatch_trace` 저장을 초기에 반영한다.
 

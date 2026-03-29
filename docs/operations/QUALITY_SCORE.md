@@ -8,9 +8,9 @@
 
 - 프로젝트 방향성: 높음
 - 문서 구조: 중간 이상
-- 구현 완성도: 낮음
+- 구현 완성도: 낮음에서 초기 구현 단계로 상승
 - 운영 준비도: 낮음
-- 포트폴리오 설득력: 부분 충족
+- 포트폴리오 설득력: 부분 충족 이상
 
 ## 품질 영역별 점검
 
@@ -34,9 +34,10 @@
 
 ### 4. Implementation Readiness
 
-- 상태: `낮음`
+- 상태: `보통 이하`
 - 근거:
-  - 아직 구현 코드가 없다
+  - Spring Boot bootstrap과 health 검증 코드는 존재한다
+  - 다만 business domain, dispatch API, trace 저장은 아직 없다
 
 ### 5. Reliability Readiness
 
@@ -46,7 +47,6 @@
 
 ## 현재 가장 큰 갭
 
-- Spring Boot 프로젝트 부재
 - dispatch API 부재
 - scenario executor 부재
 - llm gateway 부재
@@ -54,8 +54,8 @@
 
 ## 다음 개선 우선순위
 
-1. 백엔드 골격
-2. dispatch API
-3. billing inquiry 시나리오
-4. llm fallback
-5. log / trace / metrics
+1. dispatch API
+2. billing inquiry 시나리오
+3. llm fallback
+4. log / trace / metrics
+5. 운영 지표/리포트

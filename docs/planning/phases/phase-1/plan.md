@@ -25,9 +25,17 @@ Spring Boot 기반 FlowMind 백엔드의 최소 골격을 만든다.
 
 ## 현재 상태
 
-- 상태: `pending`
+- 상태: `in_progress`
+- 구현 완료:
+  - `backend/` Spring Boot 단일 모듈 생성
+  - Gradle wrapper 포함 빌드 구조 추가
+  - `FlowMindApplication`, runtime properties, `HealthController` 추가
+  - `application.yml` 및 Flyway migration baseline 추가
+  - `GET /api/health`, `GET /actuator/health`, `gradle test` 검증 완료
+- 다음 초점:
+  - Phase 2와 연결되는 intent / dispatch / session 구조 설계 및 구현
 - 관련 execution plan:
-  - [spring-boot-foundation.md](/C:/Users/ggg99/Desktop/FlowMind/FlowMind/docs/planning/exec-plans/active/spring-boot-foundation.md)
+  - [spring-boot-foundation.md](/C:/Users/ggg99/Desktop/FlowMind/FlowMind/docs/planning/exec-plans/completed/spring-boot-foundation.md)
 - 세부 계획:
   - [plan-01-project-bootstrap.md](/C:/Users/ggg99/Desktop/FlowMind/FlowMind/docs/planning/phases/phase-1/plan-01-project-bootstrap.md)
   - [plan-02-runtime-config.md](/C:/Users/ggg99/Desktop/FlowMind/FlowMind/docs/planning/phases/phase-1/plan-02-runtime-config.md)
@@ -41,6 +49,6 @@ Spring Boot 기반 FlowMind 백엔드의 최소 골격을 만든다.
 
 ## 보완 필요 항목
 
-- 패키지 네이밍 규칙 확정
-- 설정값 파일 구조 확정
-- local dev 실행 기준 문서화
+- deterministic core용 package 경계 초안
+- local/dev/prod 설정 분리 시점
+- Redis 실제 연결 및 Docker Compose 도입 시점
