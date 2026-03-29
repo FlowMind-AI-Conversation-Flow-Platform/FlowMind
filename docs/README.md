@@ -2,6 +2,13 @@
 
 FlowMind의 `docs/`는 하네스 엔지니어링 관점에서 repository knowledge의 system of record다.
 
+## 현재 기준 구현 상태
+
+- `Phase 1 > Project Bootstrap` 구현 완료
+- `backend/` 단일 모듈 Spring Boot 프로젝트 추가
+- `GET /api/health`, `GET /actuator/health` 확인 완료
+- 다음 초점은 `Phase 2 > Deterministic Core`
+
 ## 폴더 구조
 
 - `architecture/`
@@ -43,11 +50,14 @@ FlowMind의 `docs/`는 하네스 엔지니어링 관점에서 repository knowled
 - [planning/exec-plans/completed/README.md](/C:/Users/ggg99/Desktop/FlowMind/FlowMind/docs/planning/exec-plans/completed/README.md)
   - 완료 계획 보관 규칙
 
+- [planning/exec-plans/completed/spring-boot-foundation.md](/C:/Users/ggg99/Desktop/FlowMind/FlowMind/docs/planning/exec-plans/completed/spring-boot-foundation.md)
+  - 완료된 Spring Boot bootstrap 실행 계획
+
 - [planning/templates/execution-plan-template.md](/C:/Users/ggg99/Desktop/FlowMind/FlowMind/docs/planning/templates/execution-plan-template.md)
   - 새 execution plan 템플릿
 
 - [planning/phases/phase-1/plan.md](/C:/Users/ggg99/Desktop/FlowMind/FlowMind/docs/planning/phases/phase-1/plan.md)
-  - phase 1 실행 계획
+  - phase 1 실행 계획과 현재 완료 범위
 
 - [planning/phases/phase-1/plan-01-project-bootstrap.md](/C:/Users/ggg99/Desktop/FlowMind/FlowMind/docs/planning/phases/phase-1/plan-01-project-bootstrap.md)
   - phase 1 세부 계획 01
@@ -65,7 +75,7 @@ FlowMind의 `docs/`는 하네스 엔지니어링 관점에서 repository knowled
   - phase 1 세부 계획 04
 
 - [planning/phases/phase-2/plan.md](/C:/Users/ggg99/Desktop/FlowMind/FlowMind/docs/planning/phases/phase-2/plan.md)
-  - phase 2 실행 계획
+  - 다음 구현 목표인 deterministic core 실행 계획
 
 - [planning/phases/phase-3/plan.md](/C:/Users/ggg99/Desktop/FlowMind/FlowMind/docs/planning/phases/phase-3/plan.md)
   - phase 3 실행 계획

@@ -26,9 +26,10 @@ FlowMind는 이 두 문제를 동시에 풀기 위해 설계됐다.
 
 ## 현재 상태
 
-- 문서 구조와 phase 계획이 정리된 상태
-- Spring Boot bootstrap 기준까지 구체화된 상태
-- 이후 deterministic core와 LLM fallback 구현이 예정돼 있다
+- 문서 구조와 phase 계획이 정리돼 있다
+- `backend/` 하위 Spring Boot bootstrap 구현이 완료됐다
+- health endpoint, actuator health, Gradle test까지 확인됐다
+- 다음 단계는 deterministic core와 LLM fallback 구현이다
 
 ## 나중에 포트폴리오 본문에 넣을 핵심 문장
 

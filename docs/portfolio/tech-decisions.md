@@ -9,6 +9,7 @@
 - Java 기반 웹 서비스 역량을 직접 보여주기 좋다
 - 실무형 백엔드 구조를 설명하기 쉽다
 - JPA, Flyway, PostgreSQL, Redis와 조합이 안정적이다
+- 실제 bootstrap 구현 단계에서 health, 설정, migration 구조를 빠르게 검증하기 좋다
 
 ## 2. 왜 하이브리드 구조인가
 

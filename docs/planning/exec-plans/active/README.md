@@ -11,6 +11,10 @@
 
 ## 예시
 
-- `spring-boot-foundation.md`
 - `dispatch-api-mvp.md`
 - `billing-inquiry-scenario.md`
+
+## 현재 상태
+
+- `spring-boot-foundation.md`는 완료되어 `../completed/`로 이동했다
+- 새 active plan은 Phase 2 작업 범위가 정리되면 추가한다

@@ -2,9 +2,9 @@
 
 ## 이력서용 짧은 문장 초안
 
-- Intent 기반 시나리오 처리와 LLM fallback을 결합한 하이브리드 대화 플랫폼 FlowMind를 설계
-- Java/Spring Boot 기반 고객 응대 백엔드 아키텍처와 phase 기반 실행 문서 체계를 수립
-- deterministic scenario, slot filling, dispatch trace, prompt 운영 구조를 포함한 실무형 대화 시스템 설계
+- Intent 기반 시나리오 처리와 LLM fallback을 결합한 하이브리드 대화 플랫폼 FlowMind를 설계 및 구현
+- Java/Spring Boot 기반 백엔드 bootstrap과 health 검증 구조를 구축하고 phase 기반 실행 문서 체계를 운영
+- deterministic scenario, slot filling, dispatch trace, prompt 운영 구조를 포함한 실무형 대화 시스템 아키텍처를 설계
 
 ## 구현 후 강화 버전 초안
 

@@ -19,6 +19,11 @@
 - DB 마이그레이션이 자동 적용된다
 - 기본 API가 응답한다
 
+현재 기준:
+
+- Spring Boot bootstrap과 기본 health API는 완료
+- DB 실제 기동 자동화와 domain API는 다음 단계
+
 ## Phase 2. Deterministic Core
 
 목표는 규칙 기반 대화 처리의 최소 완성본을 만드는 것이다.

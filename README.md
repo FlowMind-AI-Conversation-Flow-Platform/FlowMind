@@ -23,10 +23,11 @@ FlowMind는 세 가지 축으로 동작합니다.
 
 ## 현재 상태
 
-- 현재 저장소는 `하네스 엔지니어링` 방식에 맞춰 문서 중심으로 먼저 구조를 고도화한 상태입니다.
+- 현재 저장소는 문서 중심 설계 단계를 지나 `Phase 1`의 첫 구현 결과가 반영된 상태입니다.
 - `AGENT.md`는 짧은 허브 문서이며, 실제 system of record는 `docs/`입니다.
 - 큰 작업은 `execution plan`과 `phase 문서`로 관리합니다.
-- 현재 구현 착수 기준은 `Phase 1 > Project Bootstrap`까지 구체화된 상태입니다.
+- `backend/` 하위에 Spring Boot 기반 백엔드 bootstrap이 추가됐고 기본 health 검증까지 끝났습니다.
+- 현재 기준으로 `Project Bootstrap`은 완료됐고, 다음 구현 초점은 `Phase 2 > Deterministic Core`입니다.
 
 ## 문서 구조
 
@@ -64,7 +65,8 @@ FlowMind는 세 가지 축으로 동작합니다.
 - [AGENT.md](/C:/Users/ggg99/Desktop/FlowMind/FlowMind/AGENT.md)
 - [docs/planning/PHASES.md](/C:/Users/ggg99/Desktop/FlowMind/FlowMind/docs/planning/PHASES.md)
 - [docs/planning/phases/phase-1/plan-01-project-bootstrap.md](/C:/Users/ggg99/Desktop/FlowMind/FlowMind/docs/planning/phases/phase-1/plan-01-project-bootstrap.md)
-- [docs/planning/exec-plans/active/spring-boot-foundation.md](/C:/Users/ggg99/Desktop/FlowMind/FlowMind/docs/planning/exec-plans/active/spring-boot-foundation.md)
+- [backend/README.md](/C:/Users/ggg99/Desktop/FlowMind/FlowMind/backend/README.md)
+- [docs/planning/exec-plans/completed/spring-boot-foundation.md](/C:/Users/ggg99/Desktop/FlowMind/FlowMind/docs/planning/exec-plans/completed/spring-boot-foundation.md)
 
 ## MVP 범위
 
@@ -87,11 +89,12 @@ FlowMind는 세 가지 축으로 동작합니다.
 
 ## 현재 착수 기준
 
-현재 기준에서 실제 구현 착수는 아래 문서를 기준으로 시작합니다.
+현재 기준에서 bootstrap 구현 결과와 다음 작업 연결은 아래 문서를 기준으로 이어집니다.
 
 1. [docs/planning/phases/phase-1/plan-01-project-bootstrap.md](/C:/Users/ggg99/Desktop/FlowMind/FlowMind/docs/planning/phases/phase-1/plan-01-project-bootstrap.md)
 2. [docs/planning/phases/phase-1/design-bootstrap.md](/C:/Users/ggg99/Desktop/FlowMind/FlowMind/docs/planning/phases/phase-1/design-bootstrap.md)
-3. [docs/planning/exec-plans/active/spring-boot-foundation.md](/C:/Users/ggg99/Desktop/FlowMind/FlowMind/docs/planning/exec-plans/active/spring-boot-foundation.md)
+3. [docs/planning/exec-plans/completed/spring-boot-foundation.md](/C:/Users/ggg99/Desktop/FlowMind/FlowMind/docs/planning/exec-plans/completed/spring-boot-foundation.md)
+4. [backend/README.md](/C:/Users/ggg99/Desktop/FlowMind/FlowMind/backend/README.md)
 
 이 세 문서가 맞물려 `Phase 기준`, `설계 선택`, `실행 계획`을 분리합니다.
 
@@ -107,7 +110,7 @@ FlowMind는 세 가지 축으로 동작합니다.
 
 다음 구현 단계는 아래 순서로 진행합니다.
 
-1. phase 1 서브플랜 기준으로 Spring Boot 백엔드 골격 생성
-2. 저장소/설정/health 구조 확정
-3. phase 2에서 Dispatch API와 첫 deterministic 시나리오 구현
-4. phase 3에서 LLM fallback과 trace/log 구조 추가
+1. Phase 2에서 Dispatch API와 첫 deterministic 시나리오 구현
+2. Intent / Entity / Slot 모델과 session context 구조 추가
+3. dispatch trace와 conversation log 저장 구조 확장
+4. Phase 3에서 LLM fallback과 prompt augmentation 구조 추가

@@ -54,11 +54,15 @@ FlowMind는 아래 브랜치 구조를 기본으로 사용한다.
 
 예:
 
-- `feat/phase1-backend-bootstrap`
 - `feat/phase2-intent-classifier`
 - `feat/phase2-session-context`
 - `feat/phase3-llm-fallback`
 - `feat/phase4-analytics-dashboard`
+
+최근 예시:
+
+- `feat/spring-boot-bootstrap`
+- `docs/portfolio-prep`
 
 ### 선택 브랜치
 
@@ -97,7 +101,7 @@ FlowMind는 아래 브랜치 구조를 기본으로 사용한다.
 ```bash
 git checkout dev
 git pull origin dev
-git checkout -b feat/phase2-intent-classifier
+git checkout -b feat/phase2-dispatch-api
 ```
 
 중요 원칙:
@@ -127,13 +131,12 @@ git checkout -b feat/phase2-intent-classifier
 
 ### 예시
 
-- `feat: add intent entity model`
-- `feat: implement dispatch route selection`
-- `feat: add session context persistence`
-- `fix: handle missing conversation state`
-- `docs: add project overview`
-- `refactor: split prompt selection service`
-- `test: add dispatcher integration test`
+- `feat: 디스패치 API 골격 추가`
+- `feat: 세션 컨텍스트 저장 구조 추가`
+- `fix: 누락된 대화 상태 처리 수정`
+- `docs: phase 1 문서 최신화`
+- `refactor: 프롬프트 선택 서비스 분리`
+- `test: 디스패처 통합 테스트 추가`
 
 ### 커밋 템플릿
 
@@ -243,16 +246,13 @@ git checkout -b feat/phase2-intent-classifier
 
 프로젝트 시작 시 아래와 같이 나누는 것이 적절하다.
 
-- `feat/phase1-backend-bootstrap`
-- `feat/phase1-frontend-bootstrap`
-- `feat/phase1-docker-compose`
 - `feat/phase2-intent-domain-model`
 - `feat/phase2-dispatch-api`
 - `feat/phase2-scenario-executor`
 - `feat/phase3-prompt-template`
 - `feat/phase3-llm-fallback`
 - `feat/phase4-analytics-core`
-- `docs/architecture-and-roadmap`
+- `docs/phase-status-refresh`
 
 ## 13. 한 문장으로 정리
 

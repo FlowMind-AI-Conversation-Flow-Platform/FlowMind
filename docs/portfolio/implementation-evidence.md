@@ -9,6 +9,11 @@
 - Spring Boot 프로젝트 구조 캡처
 - 실행 화면 또는 health endpoint 응답
 - Gradle build 성공 기록
+- 현재 확보됨:
+  - `backend/` 프로젝트 구조
+  - `/api/health` 응답
+  - `/actuator/health` 응답
+  - `gradle test` 성공
 
 ## 2. deterministic core 증빙
 

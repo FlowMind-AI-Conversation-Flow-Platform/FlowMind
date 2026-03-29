@@ -17,7 +17,11 @@
 
 ### Phase 1. Backend Foundation
 
-- 상태: `pending`
+- 상태: `in_progress`
+- 현재 메모:
+  - Spring Boot bootstrap 구현 완료
+  - runtime config / storage foundation / health baseline 반영 완료
+  - 다음 단계는 deterministic core로 연결되는 domain / dispatch 구조 확장
 - 문서:
   - [phase-1/plan.md](/C:/Users/ggg99/Desktop/FlowMind/FlowMind/docs/planning/phases/phase-1/plan.md)
   - [phase-1/design.md](/C:/Users/ggg99/Desktop/FlowMind/FlowMind/docs/planning/phases/phase-1/design.md)
@@ -25,6 +29,7 @@
   - [phase-1/plan-02-runtime-config.md](/C:/Users/ggg99/Desktop/FlowMind/FlowMind/docs/planning/phases/phase-1/plan-02-runtime-config.md)
   - [phase-1/plan-03-storage-foundation.md](/C:/Users/ggg99/Desktop/FlowMind/FlowMind/docs/planning/phases/phase-1/plan-03-storage-foundation.md)
   - [phase-1/plan-04-health-and-observability.md](/C:/Users/ggg99/Desktop/FlowMind/FlowMind/docs/planning/phases/phase-1/plan-04-health-and-observability.md)
+  - [exec-plans/completed/spring-boot-foundation.md](/C:/Users/ggg99/Desktop/FlowMind/FlowMind/docs/planning/exec-plans/completed/spring-boot-foundation.md)
 
 ### Phase 2. Deterministic Core
 
