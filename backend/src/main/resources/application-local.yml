@@ -1,0 +1,26 @@
+spring:
+  datasource:
+    url: ${FLOWMIND_DB_URL:jdbc:postgresql://localhost:5432/flowmind}
+    username: ${FLOWMIND_DB_USERNAME:flowmind}
+    password: ${FLOWMIND_DB_PASSWORD:flowmind}
+  flyway:
+    enabled: ${FLOWMIND_FLYWAY_ENABLED:true}
+
+  ai:
+    ollama:
+      base-url: ${FLOWMIND_OLLAMA_BASE_URL:http://localhost:11434}
+      chat:
+        options:
+          model: ${FLOWMIND_OLLAMA_CHAT_MODEL:qwen2.5:7b}
+      embedding:
+        options:
+          model: ${FLOWMIND_OLLAMA_EMBEDDING_MODEL:nomic-embed-text}
+
+flowmind:
+  integration:
+    openai-enabled: false
+    redis-enabled: false
+  storage:
+    database-enabled: true
+    flyway-enabled: true
+
