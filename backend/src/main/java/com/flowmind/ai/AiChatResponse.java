@@ -1,3 +1,3 @@
 package com.flowmind.ai;
 
-public record AiChatResponse(String answer, String provider, long latencyMs) {}
+public record AiChatResponse(String answer, String provider, long latencyMs, String sessionId) {}

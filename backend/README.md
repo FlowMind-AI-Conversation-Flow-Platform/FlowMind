@@ -36,7 +36,7 @@ Invoke-WebRequest http://localhost:8080/api/health
 Invoke-WebRequest http://localhost:8080/actuator/health
 Invoke-WebRequest http://localhost:8080/api/dispatch/metrics
 Invoke-WebRequest "http://localhost:8080/api/dispatch/traces?limit=10"
-Invoke-WebRequest http://localhost:8080/api/ai/chat -Method Post -ContentType "application/json" -Body '{"message":"안녕하세요"}'
+Invoke-WebRequest http://localhost:8080/api/ai/chat -Method Post -ContentType "application/json" -Body '{"message":"안녕하세요","sessionId":"s-1"}'
 Invoke-WebRequest http://localhost:8080/swagger-ui.html
 .\gradlew.bat test
 .\\gradlew.bat spotlessCheck
@@ -64,4 +64,4 @@ The bootstrap defaults are set to start without requiring a live database connec
 `/api/dispatch/metrics`는 `fallbackReasonCounts`, `fallbackReasonRates`, `fallbackReasonRatesWithinFallback`를 함께 제공한다.
 `/api/dispatch/metrics?window=N`은 최근 N요청 추세 지표를 제공하며 N은 1~200으로 보정된다.
 최근 구간 요약으로 `recentFallbackCount`, `recentFallbackRate`, `recentFallbackLatencyAvgMs`도 함께 제공된다.
-`/api/ai/chat` 응답에는 `latencyMs`가 포함된다.
+`/api/ai/chat` 응답에는 `latencyMs`, `sessionId`가 포함된다.
