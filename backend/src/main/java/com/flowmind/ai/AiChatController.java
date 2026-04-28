@@ -23,6 +23,7 @@ public class AiChatController {
   public ResponseEntity<?> chat(@RequestBody AiChatRequest request) {
     Instant start = Instant.now();
     String message = request == null ? null : request.message();
+    String sessionId = request == null ? null : request.sessionId();
     if (message == null || message.isBlank()) {
       return ResponseEntity.badRequest().body(Map.of("error", "message is required"));
     }
@@ -30,7 +31,7 @@ public class AiChatController {
     try {
       String answer = aiChatService.chat(message);
       long latencyMs = Duration.between(start, Instant.now()).toMillis();
-      return ResponseEntity.ok(new AiChatResponse(answer, "ollama", latencyMs));
+      return ResponseEntity.ok(new AiChatResponse(answer, "ollama", latencyMs, sessionId));
     } catch (RuntimeException ex) {
       return ResponseEntity.status(503)
           .body(Map.of("error", "llm_unavailable", "detail", ex.getMessage()));

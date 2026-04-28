@@ -42,12 +42,30 @@ class AiChatControllerTest {
         .perform(
             post("/api/ai/chat")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("""
-                    {"message":"안녕"}
+                .content(
+                    """
+                    {"message":"안녕","sessionId":"s-1"}
                     """))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.provider").value("ollama"))
         .andExpect(jsonPath("$.answer").value("안녕하세요."))
-        .andExpect(jsonPath("$.latencyMs").exists());
+        .andExpect(jsonPath("$.latencyMs").exists())
+        .andExpect(jsonPath("$.sessionId").value("s-1"));
+  }
+
+  @Test
+  void shouldAllowNullSessionId() throws Exception {
+    when(aiChatService.chat("테스트")).thenReturn("응답");
+
+    mockMvc
+        .perform(
+            post("/api/ai/chat")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("""
+                    {"message":"테스트"}
+                    """))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.answer").value("응답"))
+        .andExpect(jsonPath("$.sessionId").isEmpty());
   }
 }
