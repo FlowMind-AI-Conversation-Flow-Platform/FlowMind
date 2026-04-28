@@ -1,5 +1,7 @@
 package com.flowmind.ai;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.util.Map;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,6 +21,7 @@ public class AiChatController {
 
   @PostMapping("/chat")
   public ResponseEntity<?> chat(@RequestBody AiChatRequest request) {
+    Instant start = Instant.now();
     String message = request == null ? null : request.message();
     if (message == null || message.isBlank()) {
       return ResponseEntity.badRequest().body(Map.of("error", "message is required"));
@@ -26,7 +29,8 @@ public class AiChatController {
 
     try {
       String answer = aiChatService.chat(message);
-      return ResponseEntity.ok(new AiChatResponse(answer, "ollama"));
+      long latencyMs = Duration.between(start, Instant.now()).toMillis();
+      return ResponseEntity.ok(new AiChatResponse(answer, "ollama", latencyMs));
     } catch (RuntimeException ex) {
       return ResponseEntity.status(503)
           .body(Map.of("error", "llm_unavailable", "detail", ex.getMessage()));

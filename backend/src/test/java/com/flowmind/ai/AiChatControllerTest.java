@@ -47,6 +47,7 @@ class AiChatControllerTest {
                     """))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.provider").value("ollama"))
-        .andExpect(jsonPath("$.answer").value("안녕하세요."));
+        .andExpect(jsonPath("$.answer").value("안녕하세요."))
+        .andExpect(jsonPath("$.latencyMs").exists());
   }
 }
