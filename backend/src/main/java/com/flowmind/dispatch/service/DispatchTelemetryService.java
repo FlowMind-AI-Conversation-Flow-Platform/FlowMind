@@ -66,6 +66,10 @@ public class DispatchTelemetryService {
     int safeWindow = Math.min(Math.max(window, 1), MAX_METRICS_WINDOW);
     int recentFrom = Math.max(traces.size() - safeWindow, 0);
     List<DispatchTrace> recent = traces.subList(recentFrom, traces.size());
+    int recentFallbackCount =
+        (int) recent.stream().filter(trace -> trace.route() == RouteType.LLM).count();
+    double recentFallbackRate =
+        recent.isEmpty() ? 0.0 : (double) recentFallbackCount / recent.size();
     Map<String, Integer> recentCounts = recentFallbackReasonSnapshot(recent);
     Map<String, Double> recentRates = recentFallbackReasonRateSnapshot(recentCounts, recent.size());
     Map<String, Double> recentRatesWithinFallback =
@@ -81,6 +85,8 @@ public class DispatchTelemetryService {
         fallbackReasonRateWithinFallbackSnapshot(),
         safeWindow,
         recent.size(),
+        recentFallbackCount,
+        recentFallbackRate,
         recentCounts,
         recentRates,
         recentRatesWithinFallback);
@@ -176,6 +182,8 @@ public class DispatchTelemetryService {
       Map<String, Double> fallbackReasonRatesWithinFallback,
       int metricsWindow,
       int recentRequestCount,
+      int recentFallbackCount,
+      double recentFallbackRate,
       Map<String, Integer> recentFallbackReasonCounts,
       Map<String, Double> recentFallbackReasonRates,
       Map<String, Double> recentFallbackReasonRatesWithinFallback) {}
