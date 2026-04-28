@@ -125,6 +125,7 @@ class DispatchControllerTest {
         .andExpect(jsonPath("$.recentRequestCount").exists())
         .andExpect(jsonPath("$.recentFallbackCount").exists())
         .andExpect(jsonPath("$.recentFallbackRate").exists())
+        .andExpect(jsonPath("$.recentFallbackLatencyAvgMs").exists())
         .andExpect(jsonPath("$.recentFallbackReasonCounts.LOW_CONFIDENCE").exists())
         .andExpect(jsonPath("$.recentFallbackReasonRates.LOW_CONFIDENCE").exists())
         .andExpect(jsonPath("$.recentFallbackReasonRatesWithinFallback.LOW_CONFIDENCE").exists());
