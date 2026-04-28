@@ -64,3 +64,4 @@ The bootstrap defaults are set to start without requiring a live database connec
 `/api/dispatch/metrics`는 `fallbackReasonCounts`, `fallbackReasonRates`, `fallbackReasonRatesWithinFallback`를 함께 제공한다.
 `/api/dispatch/metrics?window=N`은 최근 N요청 추세 지표를 제공하며 N은 1~200으로 보정된다.
 최근 구간 요약으로 `recentFallbackCount`, `recentFallbackRate`, `recentFallbackLatencyAvgMs`도 함께 제공된다.
+`/api/ai/chat` 응답에는 `latencyMs`가 포함된다.
