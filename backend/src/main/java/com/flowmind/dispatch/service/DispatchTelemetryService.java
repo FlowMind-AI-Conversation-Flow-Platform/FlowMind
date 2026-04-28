@@ -1,5 +1,6 @@
 package com.flowmind.dispatch.service;
 
+import com.flowmind.dispatch.model.FallbackReason;
 import com.flowmind.dispatch.model.RouteType;
 import com.flowmind.dispatch.runtime.ConversationLogEntry;
 import com.flowmind.dispatch.runtime.DispatchTrace;
@@ -27,13 +28,14 @@ public class DispatchTelemetryService {
     conversations.add(entry);
   }
 
-  public synchronized void recordMetrics(RouteType route, String reason, Duration latency) {
+  public synchronized void recordMetrics(
+      RouteType route, FallbackReason fallbackReason, Duration latency) {
     total.incrementAndGet();
     latencyTotalMs += latency.toMillis();
     if (route == RouteType.LLM) {
       fallback.incrementAndGet();
     }
-    if ("LOW_CONFIDENCE".equals(reason)) {
+    if (fallbackReason == FallbackReason.LOW_CONFIDENCE) {
       lowConfidence.incrementAndGet();
     }
   }

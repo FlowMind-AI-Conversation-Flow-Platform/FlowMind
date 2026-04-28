@@ -1,7 +1,9 @@
 package com.flowmind.dispatch.service;
 
+import com.flowmind.config.FlowMindRuntimeProperties;
 import com.flowmind.dispatch.model.DispatchRequest;
 import com.flowmind.dispatch.model.DispatchResponse;
+import com.flowmind.dispatch.model.FallbackReason;
 import com.flowmind.dispatch.model.IntentType;
 import com.flowmind.dispatch.model.RouteType;
 import com.flowmind.dispatch.runtime.ConversationLogEntry;
@@ -22,10 +24,12 @@ public class DispatchService {
   private final ScenarioExecutor scenarioExecutor;
   private final LlmGateway llmGateway;
   private final DispatchTelemetryService telemetryService;
+  private final double confidenceThreshold;
 
   private final Map<String, SessionContext> sessions = new ConcurrentHashMap<>();
 
   public DispatchService(
+      FlowMindRuntimeProperties runtimeProperties,
       IntentClassifier intentClassifier,
       SlotService slotService,
       ScenarioExecutor scenarioExecutor,
@@ -36,6 +40,7 @@ public class DispatchService {
     this.scenarioExecutor = scenarioExecutor;
     this.llmGateway = llmGateway;
     this.telemetryService = telemetryService;
+    this.confidenceThreshold = runtimeProperties.dispatch().confidenceThreshold();
   }
 
   public DispatchResponse dispatch(DispatchRequest request) {
@@ -61,10 +66,13 @@ public class DispatchService {
     slotService.extractAndMerge(intent, request.message(), context);
     List<String> missingSlots = slotService.missingRequiredSlots(intent, context);
 
-    String fallbackReason = fallbackReason(intent, confidence, request.message());
+    FallbackReason fallbackReason = fallbackReason(intent, confidence, request.message());
     DispatchResponse response;
     RouteType route;
-    if (!missingSlots.isEmpty() && intent != IntentType.UNKNOWN) {
+    if (fallbackReason != null) {
+      route = RouteType.LLM;
+      response = llmGateway.fallback(intent, fallbackReason, context.slots());
+    } else if (!missingSlots.isEmpty() && intent != IntentType.UNKNOWN) {
       route = RouteType.SCENARIO;
       response =
           new DispatchResponse(
@@ -74,14 +82,12 @@ public class DispatchService {
               "CLARIFY",
               null,
               context.slots());
-    } else if (fallbackReason != null) {
-      route = RouteType.LLM;
-      response = llmGateway.fallback(intent, fallbackReason, context.slots());
     } else {
       route = RouteType.SCENARIO;
       response = scenarioExecutor.execute(intent, context);
     }
 
+    Duration latency = Duration.between(start, Instant.now());
     DispatchTrace trace =
         new DispatchTrace(
             Instant.now(),
@@ -89,12 +95,13 @@ public class DispatchService {
             intent,
             confidence,
             route,
-            fallbackReason == null ? "SCENARIO" : fallbackReason);
+            fallbackReason == null ? "SCENARIO" : fallbackReason.name(),
+            latency.toMillis());
     telemetryService.saveTrace(trace);
     telemetryService.saveConversation(
         new ConversationLogEntry(
             Instant.now(), sessionId, request.message(), response.message(), route));
-    telemetryService.recordMetrics(route, fallbackReason, Duration.between(start, Instant.now()));
+    telemetryService.recordMetrics(route, fallbackReason, latency);
 
     return response;
   }
@@ -103,17 +110,33 @@ public class DispatchService {
     return telemetryService.snapshot();
   }
 
-  private String fallbackReason(IntentType intent, double confidence, String message) {
+  private FallbackReason fallbackReason(IntentType intent, double confidence, String message) {
     String text = message == null ? "" : message.toLowerCase();
-    if (confidence < 0.5 || intent == IntentType.UNKNOWN) {
-      return "LOW_CONFIDENCE";
+    if (containsEmotionSignal(text)) {
+      return FallbackReason.EMOTION_HEAVY;
     }
-    if (text.contains("그리고") || text.contains("및")) {
-      return "COMPLEX_REQUEST";
+    if (containsComplexSignal(text)) {
+      return FallbackReason.COMPLEX_REQUEST;
     }
-    if (text.contains("짜증") || text.contains("화나") || text.contains("불만")) {
-      return "EMOTION_HEAVY";
+    if (confidence < confidenceThreshold || intent == IntentType.UNKNOWN) {
+      return FallbackReason.LOW_CONFIDENCE;
     }
     return null;
+  }
+
+  private boolean containsComplexSignal(String text) {
+    return text.contains("그리고")
+        || text.contains("및")
+        || text.contains("또")
+        || text.contains("동시에")
+        || text.contains("같이");
+  }
+
+  private boolean containsEmotionSignal(String text) {
+    return text.contains("짜증")
+        || text.contains("화나")
+        || text.contains("불만")
+        || text.contains("화가")
+        || text.contains("엉망");
   }
 }

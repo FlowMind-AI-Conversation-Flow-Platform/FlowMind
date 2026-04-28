@@ -91,3 +91,7 @@ FlowMind Finance VoiceOps MVP 구현 계획
 ## 진행 상태
 
 - `in_progress`
+- 2026-04-28 업데이트:
+  - `FLOWMIND_CONFIDENCE_THRESHOLD` 설정 기반 confidence gate 적용
+  - fallback reason 코드 분리(`LOW_CONFIDENCE`, `COMPLEX_REQUEST`, `EMOTION_HEAVY`)
+  - dispatch trace에 `latencyMs` 필드 추가

@@ -36,5 +36,6 @@ Invoke-WebRequest http://localhost:8080/swagger-ui.html
 - `FLOWMIND_REDIS_ENABLED`
 - `FLOWMIND_OPENAI_ENABLED`
 - `FLOWMIND_SWAGGER_ENABLED`
+- `FLOWMIND_CONFIDENCE_THRESHOLD` (default: `0.65`)
 
 The bootstrap defaults are set to start without requiring a live database connection.
