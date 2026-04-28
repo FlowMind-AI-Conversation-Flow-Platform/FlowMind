@@ -15,6 +15,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class DispatchTelemetryService {
   private static final int MAX_TRACE_LIMIT = 100;
+  private static final int DEFAULT_METRICS_WINDOW = 50;
+  private static final int MAX_METRICS_WINDOW = 200;
 
   private final List<DispatchTrace> traces = new ArrayList<>();
   private final List<ConversationLogEntry> conversations = new ArrayList<>();
@@ -54,19 +56,34 @@ public class DispatchTelemetryService {
     }
   }
 
-  public synchronized MetricsSnapshot snapshot() {
+  public synchronized MetricsSnapshot snapshot(int window) {
     int totalCount = total.get();
     double fallbackRate = totalCount == 0 ? 0.0 : (double) fallback.get() / totalCount;
     double misclassificationRate =
         totalCount == 0 ? 0.0 : (double) lowConfidence.get() / totalCount;
     double avgLatency = totalCount == 0 ? 0.0 : (double) latencyTotalMs / totalCount;
+
+    int safeWindow = Math.min(Math.max(window, 1), MAX_METRICS_WINDOW);
+    int recentFrom = Math.max(traces.size() - safeWindow, 0);
+    List<DispatchTrace> recent = traces.subList(recentFrom, traces.size());
+    Map<String, Integer> recentCounts = recentFallbackReasonSnapshot(recent);
+    Map<String, Double> recentRates = recentFallbackReasonRateSnapshot(recentCounts, recent.size());
+
     return new MetricsSnapshot(
         totalCount,
         fallbackRate,
         misclassificationRate,
         avgLatency,
         fallbackReasonSnapshot(),
-        fallbackReasonRateSnapshot());
+        fallbackReasonRateSnapshot(),
+        safeWindow,
+        recent.size(),
+        recentCounts,
+        recentRates);
+  }
+
+  public synchronized MetricsSnapshot snapshot() {
+    return snapshot(DEFAULT_METRICS_WINDOW);
   }
 
   public synchronized List<DispatchTrace> recentTraces(int limit) {
@@ -94,11 +111,41 @@ public class DispatchTelemetryService {
     return snapshot;
   }
 
+  private Map<String, Integer> recentFallbackReasonSnapshot(List<DispatchTrace> recent) {
+    Map<String, Integer> snapshot = new java.util.LinkedHashMap<>();
+    for (FallbackReason reason : FallbackReason.values()) {
+      snapshot.put(reason.name(), 0);
+    }
+    for (DispatchTrace trace : recent) {
+      for (FallbackReason reason : FallbackReason.values()) {
+        if (reason.name().equals(trace.reason())) {
+          snapshot.put(reason.name(), snapshot.get(reason.name()) + 1);
+        }
+      }
+    }
+    return snapshot;
+  }
+
+  private Map<String, Double> recentFallbackReasonRateSnapshot(
+      Map<String, Integer> recentCounts, int recentSize) {
+    Map<String, Double> snapshot = new java.util.LinkedHashMap<>();
+    for (FallbackReason reason : FallbackReason.values()) {
+      int count = recentCounts.get(reason.name());
+      double rate = recentSize == 0 ? 0.0 : (double) count / recentSize;
+      snapshot.put(reason.name(), rate);
+    }
+    return snapshot;
+  }
+
   public record MetricsSnapshot(
       int totalRequests,
       double fallbackRate,
       double misclassificationRate,
       double averageLatencyMs,
       Map<String, Integer> fallbackReasonCounts,
-      Map<String, Double> fallbackReasonRates) {}
+      Map<String, Double> fallbackReasonRates,
+      int metricsWindow,
+      int recentRequestCount,
+      Map<String, Integer> recentFallbackReasonCounts,
+      Map<String, Double> recentFallbackReasonRates) {}
 }
