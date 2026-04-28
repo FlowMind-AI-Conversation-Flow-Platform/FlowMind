@@ -10,4 +10,5 @@ public record DispatchTrace(
     IntentType intent,
     double confidence,
     RouteType route,
-    String reason) {}
+    String reason,
+    Long latencyMs) {}

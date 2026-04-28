@@ -61,6 +61,36 @@ class DispatchControllerTest {
                                 """))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.route").value("LLM"))
+        .andExpect(jsonPath("$.fallbackReason").value("EMOTION_HEAVY"));
+  }
+
+  @Test
+  void complexRequestShouldRouteToFallback() throws Exception {
+    mockMvc
+        .perform(
+            post("/api/dispatch")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(
+                    """
+                                {"sessionId":"s4","message":"계좌 정보랑 거래내역을 동시에 그리고 같이 확인해줘"}
+                                """))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.route").value("LLM"))
+        .andExpect(jsonPath("$.fallbackReason").value("COMPLEX_REQUEST"));
+  }
+
+  @Test
+  void lowConfidenceShouldRouteToFallback() throws Exception {
+    mockMvc
+        .perform(
+            post("/api/dispatch")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(
+                    """
+                                {"sessionId":"s5","message":"아무튼 뭔가 좀 해줘"}
+                                """))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.route").value("LLM"))
         .andExpect(jsonPath("$.fallbackReason").value("LOW_CONFIDENCE"));
   }
 

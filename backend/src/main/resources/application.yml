@@ -65,4 +65,6 @@ flowmind:
   storage:
     database-enabled: ${FLOWMIND_DB_ENABLED:false}
     flyway-enabled: ${FLOWMIND_FLYWAY_ENABLED:false}
+  dispatch:
+    confidence-threshold: ${FLOWMIND_CONFIDENCE_THRESHOLD:0.65}
 
