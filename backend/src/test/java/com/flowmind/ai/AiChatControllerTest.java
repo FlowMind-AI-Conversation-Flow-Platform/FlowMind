@@ -31,6 +31,7 @@ class AiChatControllerTest {
                     {"message":" "}
                     """))
         .andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.errorCode").value("INVALID_REQUEST"))
         .andExpect(jsonPath("$.error").value("message is required"));
   }
 
@@ -67,5 +68,23 @@ class AiChatControllerTest {
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.answer").value("응답"))
         .andExpect(jsonPath("$.sessionId").isEmpty());
+  }
+
+  @Test
+  void shouldReturnServiceUnavailableErrorCodeWhenLlmFails() throws Exception {
+    when(aiChatService.chat("장애테스트")).thenThrow(new RuntimeException("connection refused"));
+
+    mockMvc
+        .perform(
+            post("/api/ai/chat")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(
+                    """
+                    {"message":"장애테스트","sessionId":"s-err"}
+                    """))
+        .andExpect(status().isServiceUnavailable())
+        .andExpect(jsonPath("$.errorCode").value("LLM_UNAVAILABLE"))
+        .andExpect(jsonPath("$.error").value("llm_unavailable"))
+        .andExpect(jsonPath("$.detail").exists());
   }
 }
