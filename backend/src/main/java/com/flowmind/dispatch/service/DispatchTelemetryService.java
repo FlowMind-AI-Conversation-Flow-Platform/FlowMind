@@ -68,6 +68,8 @@ public class DispatchTelemetryService {
     List<DispatchTrace> recent = traces.subList(recentFrom, traces.size());
     Map<String, Integer> recentCounts = recentFallbackReasonSnapshot(recent);
     Map<String, Double> recentRates = recentFallbackReasonRateSnapshot(recentCounts, recent.size());
+    Map<String, Double> recentRatesWithinFallback =
+        recentFallbackReasonRateWithinFallbackSnapshot(recentCounts);
 
     return new MetricsSnapshot(
         totalCount,
@@ -76,10 +78,12 @@ public class DispatchTelemetryService {
         avgLatency,
         fallbackReasonSnapshot(),
         fallbackReasonRateSnapshot(),
+        fallbackReasonRateWithinFallbackSnapshot(),
         safeWindow,
         recent.size(),
         recentCounts,
-        recentRates);
+        recentRates,
+        recentRatesWithinFallback);
   }
 
   public synchronized MetricsSnapshot snapshot() {
@@ -111,6 +115,19 @@ public class DispatchTelemetryService {
     return snapshot;
   }
 
+  private Map<String, Double> fallbackReasonRateWithinFallbackSnapshot() {
+    Map<String, Double> snapshot = new java.util.LinkedHashMap<>();
+    int fallbackCount = fallback.get();
+    for (FallbackReason reason : FallbackReason.values()) {
+      double rate =
+          fallbackCount == 0
+              ? 0.0
+              : (double) fallbackReasonCounts.get(reason).get() / fallbackCount;
+      snapshot.put(reason.name(), rate);
+    }
+    return snapshot;
+  }
+
   private Map<String, Integer> recentFallbackReasonSnapshot(List<DispatchTrace> recent) {
     Map<String, Integer> snapshot = new java.util.LinkedHashMap<>();
     for (FallbackReason reason : FallbackReason.values()) {
@@ -137,6 +154,18 @@ public class DispatchTelemetryService {
     return snapshot;
   }
 
+  private Map<String, Double> recentFallbackReasonRateWithinFallbackSnapshot(
+      Map<String, Integer> recentCounts) {
+    Map<String, Double> snapshot = new java.util.LinkedHashMap<>();
+    int fallbackCount = recentCounts.values().stream().mapToInt(Integer::intValue).sum();
+    for (FallbackReason reason : FallbackReason.values()) {
+      int count = recentCounts.get(reason.name());
+      double rate = fallbackCount == 0 ? 0.0 : (double) count / fallbackCount;
+      snapshot.put(reason.name(), rate);
+    }
+    return snapshot;
+  }
+
   public record MetricsSnapshot(
       int totalRequests,
       double fallbackRate,
@@ -144,8 +173,10 @@ public class DispatchTelemetryService {
       double averageLatencyMs,
       Map<String, Integer> fallbackReasonCounts,
       Map<String, Double> fallbackReasonRates,
+      Map<String, Double> fallbackReasonRatesWithinFallback,
       int metricsWindow,
       int recentRequestCount,
       Map<String, Integer> recentFallbackReasonCounts,
-      Map<String, Double> recentFallbackReasonRates) {}
+      Map<String, Double> recentFallbackReasonRates,
+      Map<String, Double> recentFallbackReasonRatesWithinFallback) {}
 }
