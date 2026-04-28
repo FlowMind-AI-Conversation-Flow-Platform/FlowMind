@@ -70,6 +70,14 @@ public class DispatchTelemetryService {
         (int) recent.stream().filter(trace -> trace.route() == RouteType.LLM).count();
     double recentFallbackRate =
         recent.isEmpty() ? 0.0 : (double) recentFallbackCount / recent.size();
+    double recentFallbackLatencyAvgMs =
+        recentFallbackCount == 0
+            ? 0.0
+            : recent.stream()
+                .filter(trace -> trace.route() == RouteType.LLM)
+                .mapToLong(trace -> trace.latencyMs() == null ? 0L : trace.latencyMs())
+                .average()
+                .orElse(0.0);
     Map<String, Integer> recentCounts = recentFallbackReasonSnapshot(recent);
     Map<String, Double> recentRates = recentFallbackReasonRateSnapshot(recentCounts, recent.size());
     Map<String, Double> recentRatesWithinFallback =
@@ -87,6 +95,7 @@ public class DispatchTelemetryService {
         recent.size(),
         recentFallbackCount,
         recentFallbackRate,
+        recentFallbackLatencyAvgMs,
         recentCounts,
         recentRates,
         recentRatesWithinFallback);
@@ -184,6 +193,7 @@ public class DispatchTelemetryService {
       int recentRequestCount,
       int recentFallbackCount,
       double recentFallbackRate,
+      double recentFallbackLatencyAvgMs,
       Map<String, Integer> recentFallbackReasonCounts,
       Map<String, Double> recentFallbackReasonRates,
       Map<String, Double> recentFallbackReasonRatesWithinFallback) {}
