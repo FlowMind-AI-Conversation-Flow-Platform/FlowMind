@@ -14,6 +14,21 @@ cd backend
 .\gradlew.bat bootRun
 ```
 
+## Run (Free Local AI Stack)
+
+```powershell
+# repo root
+docker compose -f docker-compose.local-ai.yml up -d
+
+# 모델 다운로드(최초 1회)
+docker exec -it flowmind-ollama ollama pull qwen2.5:7b
+docker exec -it flowmind-ollama ollama pull nomic-embed-text
+
+# backend 실행
+cd backend
+.\gradlew.bat bootRun --args="--spring.profiles.active=local"
+```
+
 ## Verify
 
 ```powershell
@@ -21,6 +36,7 @@ Invoke-WebRequest http://localhost:8080/api/health
 Invoke-WebRequest http://localhost:8080/actuator/health
 Invoke-WebRequest http://localhost:8080/api/dispatch/metrics
 Invoke-WebRequest "http://localhost:8080/api/dispatch/traces?limit=10"
+Invoke-WebRequest http://localhost:8080/api/ai/chat -Method Post -ContentType "application/json" -Body '{"message":"안녕하세요"}'
 Invoke-WebRequest http://localhost:8080/swagger-ui.html
 .\gradlew.bat test
 .\\gradlew.bat spotlessCheck
@@ -38,6 +54,9 @@ Invoke-WebRequest http://localhost:8080/swagger-ui.html
 - `FLOWMIND_OPENAI_ENABLED`
 - `FLOWMIND_SWAGGER_ENABLED`
 - `FLOWMIND_CONFIDENCE_THRESHOLD` (default: `0.65`)
+- `FLOWMIND_OLLAMA_BASE_URL` (default: `http://localhost:11434`)
+- `FLOWMIND_OLLAMA_CHAT_MODEL` (default: `qwen2.5:7b`)
+- `FLOWMIND_OLLAMA_EMBEDDING_MODEL` (default: `nomic-embed-text`)
 
 The bootstrap defaults are set to start without requiring a live database connection.
 

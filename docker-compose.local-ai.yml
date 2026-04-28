@@ -1,0 +1,30 @@
+services:
+  postgres:
+    image: pgvector/pgvector:pg16
+    container_name: flowmind-postgres
+    environment:
+      POSTGRES_DB: flowmind
+      POSTGRES_USER: flowmind
+      POSTGRES_PASSWORD: flowmind
+    ports:
+      - "5432:5432"
+    volumes:
+      - flowmind-postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U flowmind -d flowmind"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  ollama:
+    image: ollama/ollama:latest
+    container_name: flowmind-ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - flowmind-ollama-data:/root/.ollama
+
+volumes:
+  flowmind-postgres-data:
+  flowmind-ollama-data:
+
