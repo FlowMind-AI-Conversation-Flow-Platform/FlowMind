@@ -114,7 +114,10 @@ class DispatchControllerTest {
         .andExpect(jsonPath("$.averageLatencyMs").exists())
         .andExpect(jsonPath("$.fallbackReasonCounts.LOW_CONFIDENCE").exists())
         .andExpect(jsonPath("$.fallbackReasonCounts.COMPLEX_REQUEST").exists())
-        .andExpect(jsonPath("$.fallbackReasonCounts.EMOTION_HEAVY").exists());
+        .andExpect(jsonPath("$.fallbackReasonCounts.EMOTION_HEAVY").exists())
+        .andExpect(jsonPath("$.fallbackReasonRates.LOW_CONFIDENCE").exists())
+        .andExpect(jsonPath("$.fallbackReasonRates.COMPLEX_REQUEST").exists())
+        .andExpect(jsonPath("$.fallbackReasonRates.EMOTION_HEAVY").exists());
   }
 
   @Test

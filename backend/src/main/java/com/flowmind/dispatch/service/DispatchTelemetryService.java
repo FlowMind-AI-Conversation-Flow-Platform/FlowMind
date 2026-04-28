@@ -61,7 +61,12 @@ public class DispatchTelemetryService {
         totalCount == 0 ? 0.0 : (double) lowConfidence.get() / totalCount;
     double avgLatency = totalCount == 0 ? 0.0 : (double) latencyTotalMs / totalCount;
     return new MetricsSnapshot(
-        totalCount, fallbackRate, misclassificationRate, avgLatency, fallbackReasonSnapshot());
+        totalCount,
+        fallbackRate,
+        misclassificationRate,
+        avgLatency,
+        fallbackReasonSnapshot(),
+        fallbackReasonRateSnapshot());
   }
 
   public synchronized List<DispatchTrace> recentTraces(int limit) {
@@ -78,10 +83,22 @@ public class DispatchTelemetryService {
     return snapshot;
   }
 
+  private Map<String, Double> fallbackReasonRateSnapshot() {
+    Map<String, Double> snapshot = new java.util.LinkedHashMap<>();
+    int totalCount = total.get();
+    for (FallbackReason reason : FallbackReason.values()) {
+      double rate =
+          totalCount == 0 ? 0.0 : (double) fallbackReasonCounts.get(reason).get() / totalCount;
+      snapshot.put(reason.name(), rate);
+    }
+    return snapshot;
+  }
+
   public record MetricsSnapshot(
       int totalRequests,
       double fallbackRate,
       double misclassificationRate,
       double averageLatencyMs,
-      Map<String, Integer> fallbackReasonCounts) {}
+      Map<String, Integer> fallbackReasonCounts,
+      Map<String, Double> fallbackReasonRates) {}
 }
