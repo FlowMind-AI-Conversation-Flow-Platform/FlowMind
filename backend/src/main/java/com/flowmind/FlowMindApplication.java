@@ -8,8 +8,7 @@ import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 @ConfigurationPropertiesScan
 public class FlowMindApplication {
 
-    public static void main(String[] args) {
-        SpringApplication.run(FlowMindApplication.class, args);
-    }
+  public static void main(String[] args) {
+    SpringApplication.run(FlowMindApplication.class, args);
+  }
 }
-

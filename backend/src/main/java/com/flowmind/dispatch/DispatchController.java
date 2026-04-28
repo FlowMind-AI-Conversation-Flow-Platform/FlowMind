@@ -15,19 +15,19 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/dispatch")
 public class DispatchController {
 
-    private final DispatchService dispatchService;
+  private final DispatchService dispatchService;
 
-    public DispatchController(DispatchService dispatchService) {
-        this.dispatchService = dispatchService;
-    }
+  public DispatchController(DispatchService dispatchService) {
+    this.dispatchService = dispatchService;
+  }
 
-    @PostMapping
-    public ResponseEntity<DispatchResponse> dispatch(@RequestBody DispatchRequest request) {
-        return ResponseEntity.ok(dispatchService.dispatch(request));
-    }
+  @PostMapping
+  public ResponseEntity<DispatchResponse> dispatch(@RequestBody DispatchRequest request) {
+    return ResponseEntity.ok(dispatchService.dispatch(request));
+  }
 
-    @GetMapping("/metrics")
-    public ResponseEntity<DispatchTelemetryService.MetricsSnapshot> metrics() {
-        return ResponseEntity.ok(dispatchService.metrics());
-    }
+  @GetMapping("/metrics")
+  public ResponseEntity<DispatchTelemetryService.MetricsSnapshot> metrics() {
+    return ResponseEntity.ok(dispatchService.metrics());
+  }
 }

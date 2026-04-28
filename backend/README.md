@@ -20,7 +20,9 @@ cd backend
 Invoke-WebRequest http://localhost:8080/api/health
 Invoke-WebRequest http://localhost:8080/actuator/health
 Invoke-WebRequest http://localhost:8080/api/dispatch/metrics
+Invoke-WebRequest http://localhost:8080/swagger-ui.html
 .\gradlew.bat test
+.\\gradlew.bat spotlessCheck
 ```
 
 ## Environment variables
@@ -33,6 +35,6 @@ Invoke-WebRequest http://localhost:8080/api/dispatch/metrics
 - `FLOWMIND_FLYWAY_ENABLED`
 - `FLOWMIND_REDIS_ENABLED`
 - `FLOWMIND_OPENAI_ENABLED`
+- `FLOWMIND_SWAGGER_ENABLED`
 
 The bootstrap defaults are set to start without requiring a live database connection.
-
