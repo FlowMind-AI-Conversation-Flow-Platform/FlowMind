@@ -110,6 +110,10 @@ public class DispatchService {
     return telemetryService.snapshot();
   }
 
+  public List<DispatchTrace> recentTraces(int limit) {
+    return telemetryService.recentTraces(limit);
+  }
+
   private FallbackReason fallbackReason(IntentType intent, double confidence, String message) {
     String text = message == null ? "" : message.toLowerCase();
     if (containsEmotionSignal(text)) {

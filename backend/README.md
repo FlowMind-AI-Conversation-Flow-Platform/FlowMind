@@ -20,6 +20,7 @@ cd backend
 Invoke-WebRequest http://localhost:8080/api/health
 Invoke-WebRequest http://localhost:8080/actuator/health
 Invoke-WebRequest http://localhost:8080/api/dispatch/metrics
+Invoke-WebRequest "http://localhost:8080/api/dispatch/traces?limit=10"
 Invoke-WebRequest http://localhost:8080/swagger-ui.html
 .\gradlew.bat test
 .\\gradlew.bat spotlessCheck
