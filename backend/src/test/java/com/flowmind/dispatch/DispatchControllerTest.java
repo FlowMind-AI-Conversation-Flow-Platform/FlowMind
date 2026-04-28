@@ -118,10 +118,14 @@ class DispatchControllerTest {
         .andExpect(jsonPath("$.fallbackReasonRates.LOW_CONFIDENCE").exists())
         .andExpect(jsonPath("$.fallbackReasonRates.COMPLEX_REQUEST").exists())
         .andExpect(jsonPath("$.fallbackReasonRates.EMOTION_HEAVY").exists())
+        .andExpect(jsonPath("$.fallbackReasonRatesWithinFallback.LOW_CONFIDENCE").exists())
+        .andExpect(jsonPath("$.fallbackReasonRatesWithinFallback.COMPLEX_REQUEST").exists())
+        .andExpect(jsonPath("$.fallbackReasonRatesWithinFallback.EMOTION_HEAVY").exists())
         .andExpect(jsonPath("$.metricsWindow").value(50))
         .andExpect(jsonPath("$.recentRequestCount").exists())
         .andExpect(jsonPath("$.recentFallbackReasonCounts.LOW_CONFIDENCE").exists())
-        .andExpect(jsonPath("$.recentFallbackReasonRates.LOW_CONFIDENCE").exists());
+        .andExpect(jsonPath("$.recentFallbackReasonRates.LOW_CONFIDENCE").exists())
+        .andExpect(jsonPath("$.recentFallbackReasonRatesWithinFallback.LOW_CONFIDENCE").exists());
   }
 
   @Test
