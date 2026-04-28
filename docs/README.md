@@ -53,6 +53,9 @@ FlowMind의 `docs/`는 하네스 엔지니어링 관점에서 repository knowled
 - [planning/exec-plans/completed/spring-boot-foundation.md](/C:/Users/ggg99/Desktop/FlowMind/FlowMind/docs/planning/exec-plans/completed/spring-boot-foundation.md)
   - 완료된 Spring Boot bootstrap 실행 계획
 
+- [planning/exec-plans/active/finance-voiceops-mvp.md](/C:/Users/ggg99/Desktop/FlowMind/FlowMind/docs/planning/exec-plans/active/finance-voiceops-mvp.md)
+  - 금융 본인확인·거래안내 하이브리드 MVP 실행 계획
+
 - [planning/templates/execution-plan-template.md](/C:/Users/ggg99/Desktop/FlowMind/FlowMind/docs/planning/templates/execution-plan-template.md)
   - 새 execution plan 템플릿
 
@@ -118,11 +121,20 @@ FlowMind의 `docs/`는 하네스 엔지니어링 관점에서 repository knowled
 - [guides/agent-context-conventions.md](/C:/Users/ggg99/Desktop/FlowMind/FlowMind/docs/guides/agent-context-conventions.md)
   - 프로젝트 컨벤션
 
+- [guides/ai-collaboration.md](/C:/Users/ggg99/Desktop/FlowMind/FlowMind/docs/guides/ai-collaboration.md)
+  - 오케스트레이터 중심 AI 협업 통제 규칙
+
 - [guides/git-workflow.md](/C:/Users/ggg99/Desktop/FlowMind/FlowMind/docs/guides/git-workflow.md)
   - 브랜치 및 협업 규칙
 
 - [guides/contribution-templates.md](/C:/Users/ggg99/Desktop/FlowMind/FlowMind/docs/guides/contribution-templates.md)
   - 이슈, PR, 커밋 템플릿 사용 규칙
+
+- [operations/orchestrator-agent-playbook.md](/C:/Users/ggg99/Desktop/FlowMind/FlowMind/docs/operations/orchestrator-agent-playbook.md)
+  - slice 단위 dispatch/검증/위반 처리 플레이북
+
+- [operations/orchestrator-manager-automation.md](/C:/Users/ggg99/Desktop/FlowMind/FlowMind/docs/operations/orchestrator-manager-automation.md)
+  - 이슈 기반 오케스트레이터 자동 배정/게이트 운영
 
 ## 7. 포트폴리오 자료
 

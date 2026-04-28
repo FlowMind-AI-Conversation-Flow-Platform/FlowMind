@@ -19,6 +19,7 @@ cd backend
 ```powershell
 Invoke-WebRequest http://localhost:8080/api/health
 Invoke-WebRequest http://localhost:8080/actuator/health
+Invoke-WebRequest http://localhost:8080/api/dispatch/metrics
 .\gradlew.bat test
 ```
 

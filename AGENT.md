@@ -5,6 +5,24 @@
 이 문서는 FlowMind 저장소에서 에이전트가 따라야 할 짧은 허브 문서다.
 상세 규칙은 `docs/`가 system of record이며, 이 문서는 무엇을 먼저 읽고 어떻게 작업을 시작할지 안내한다.
 
+## AGENT.md vs AGENTS.md
+
+- `AGENTS.md`: 사람/AI 공통 진입 문서(프로젝트 스냅샷, 공통 규칙, 기본 핸드오프 형식)
+- `AGENT.md`: 현재 세션 운영 허브(하네스 트리거, 작업 흐름, 컨텍스트 우선순위)
+
+## 하네스: FlowMind Delivery Harness
+
+**목표:** FlowMind 작업을 오케스트레이터 기반으로 분해해 구현, 문서, 검증을 일관되게 완료한다.
+
+**트리거:** FlowMind 구현/수정/검증/문서 동기화 요청 시 `flowmind-orchestrator` 스킬을 사용한다. 하위 에이전트 통제/게이트 운영 요청 시 `flowmind-ai-control` 스킬을 함께 사용한다. 단순 질의응답은 직접 처리 가능하다.
+
+**변경 이력:**
+| 날짜 | 변경 내용 | 대상 | 사유 |
+|------|----------|------|------|
+| 2026-04-27 | 초기 하네스 구성 | agents/, skills/, AGENT.md | 에이전트 팀 기반 실행 체계 도입 |
+| 2026-04-27 | AI 협업 통제 체계 이식 | AGENTS.md, docs/guides, docs/operations, skills | 오케스트레이터 중심 통제 규칙 반영 |
+| 2026-04-27 | 오케스트레이터 자동화 도구 추가 | scripts/, docs/operations | 이슈 기반 자동 배정과 게이트 운영 지원 |
+
 ## 절대 규칙
 
 1. 구현, 수정, 삭제, 리팩터링, 문서 변경 전에는 반드시 계획을 작성한다.
@@ -24,9 +42,12 @@
 
 ## 공통 필수 컨텍스트
 
+- [AGENTS.md](./AGENTS.md)
 - [README.md](./README.md)
 - [docs/README.md](./docs/README.md)
 - [docs/planning/PLANS.md](./docs/planning/PLANS.md)
+- [docs/guides/ai-collaboration.md](./docs/guides/ai-collaboration.md)
+- [docs/operations/orchestrator-agent-playbook.md](./docs/operations/orchestrator-agent-playbook.md)
 
 ## 현재 작업 기준점
 

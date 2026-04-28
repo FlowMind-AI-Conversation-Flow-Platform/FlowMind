@@ -6,13 +6,15 @@ Hybrid Routing
 
 ## 목표
 
-low-confidence 입력을 LLM fallback으로 넘기는 하이브리드 라우팅 구조를 구현한다.
+금융 보이스옵스에서 low-confidence 입력을 LLM fallback으로 넘기는 하이브리드 라우팅 구조를 구현한다.
 
 ## 범위
 
 - prompt file 기반 템플릿 관리
 - `LlmGateway`
 - low-confidence route
+- 복합 요청 route (한 문장 다중 업무)
+- 감정/불만 표현 route
 - prompt augmentation
 - structured output 파싱
 - fallback reason 저장
@@ -20,6 +22,8 @@ low-confidence 입력을 LLM fallback으로 넘기는 하이브리드 라우팅 
 ## 완료 기준
 
 - 애매한 입력이 LLM route로 전달된다
+- 복합 요청이 LLM route로 전달된다
+- 감정/불만 표현 중심 요청이 LLM route로 전달된다
 - prompt version과 fallback reason이 저장된다
 - scenario와 llm route를 구분해 추적할 수 있다
 
@@ -37,3 +41,4 @@ low-confidence 입력을 LLM fallback으로 넘기는 하이브리드 라우팅 
 - fallback threshold 기준 확정
 - prompt 파일 목록 확정
 - output contract 스키마 확정
+- 금융 도메인 민감정보 masking 정책 확정
