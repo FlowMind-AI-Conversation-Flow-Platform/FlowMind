@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class DispatchTelemetryService {
+  private static final int MAX_TRACE_LIMIT = 100;
 
   private final List<DispatchTrace> traces = new ArrayList<>();
   private final List<ConversationLogEntry> conversations = new ArrayList<>();
@@ -64,7 +65,7 @@ public class DispatchTelemetryService {
   }
 
   public synchronized List<DispatchTrace> recentTraces(int limit) {
-    int safeLimit = Math.max(limit, 1);
+    int safeLimit = Math.min(Math.max(limit, 1), MAX_TRACE_LIMIT);
     int fromIndex = Math.max(traces.size() - safeLimit, 0);
     return new ArrayList<>(traces.subList(fromIndex, traces.size()));
   }

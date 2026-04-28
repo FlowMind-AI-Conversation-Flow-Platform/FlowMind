@@ -97,3 +97,4 @@ FlowMind Finance VoiceOps MVP 구현 계획
   - dispatch trace에 `latencyMs` 필드 추가
   - metrics에 fallback reason별 카운트 포함
   - 운영 디버깅용 `GET /api/dispatch/traces?limit=N` 추가
+  - traces 조회 limit 가드레일 적용(1~100 범위 보정)
