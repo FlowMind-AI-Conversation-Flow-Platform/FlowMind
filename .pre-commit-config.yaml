@@ -1,0 +1,24 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-merge-conflict
+      - id: mixed-line-ending
+        args: [--fix=lf]
+
+  - repo: local
+    hooks:
+      - id: backend-spotless-check
+        name: backend spotless check
+        entry: powershell -Command "cd backend; .\gradlew.bat spotlessCheck"
+        language: system
+        pass_filenames: false
+
+      - id: backend-test
+        name: backend test
+        entry: powershell -Command "cd backend; .\gradlew.bat test"
+        language: system
+        pass_filenames: false

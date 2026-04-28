@@ -110,6 +110,14 @@ FlowMind는 세 가지 축으로 동작합니다.
 - 설정값은 코드 상수가 아니라 운영 가능한 설정으로 분리합니다.
 - `main / dev / feat-*` 브랜치 전략으로 개발합니다.
 
+## 품질 게이트
+
+- Backend lint/format: `backend\\gradlew.bat spotlessCheck`
+- Backend test: `backend\\gradlew.bat test`
+- pre-commit hooks: `.pre-commit-config.yaml`
+- CI workflow: `.github/workflows/ci.yml`
+- AI PR review workflow: `.github/workflows/ai-pr-review.yml`
+
 ## 다음 단계
 
 다음 구현 단계는 아래 순서로 진행합니다.

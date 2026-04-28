@@ -12,29 +12,28 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/health")
 public class HealthController {
 
-    private final FlowMindRuntimeProperties runtimeProperties;
+  private final FlowMindRuntimeProperties runtimeProperties;
 
-    public HealthController(FlowMindRuntimeProperties runtimeProperties) {
-        this.runtimeProperties = runtimeProperties;
-    }
+  public HealthController(FlowMindRuntimeProperties runtimeProperties) {
+    this.runtimeProperties = runtimeProperties;
+  }
 
-    @GetMapping
-    public ResponseEntity<Map<String, Object>> readHealth() {
-        Map<String, Object> payload = Map.of(
-                "status", "UP",
-                "service", runtimeProperties.applicationName(),
-                "timestamp", Instant.now().toString(),
-                "storage", Map.of(
-                        "databaseEnabled", runtimeProperties.storage().databaseEnabled(),
-                        "flywayEnabled", runtimeProperties.storage().flywayEnabled()
-                ),
-                "integration", Map.of(
-                        "redisEnabled", runtimeProperties.integration().redisEnabled(),
-                        "openaiEnabled", runtimeProperties.integration().openaiEnabled()
-                )
-        );
+  @GetMapping
+  public ResponseEntity<Map<String, Object>> readHealth() {
+    Map<String, Object> payload =
+        Map.of(
+            "status", "UP",
+            "service", runtimeProperties.applicationName(),
+            "timestamp", Instant.now().toString(),
+            "storage",
+                Map.of(
+                    "databaseEnabled", runtimeProperties.storage().databaseEnabled(),
+                    "flywayEnabled", runtimeProperties.storage().flywayEnabled()),
+            "integration",
+                Map.of(
+                    "redisEnabled", runtimeProperties.integration().redisEnabled(),
+                    "openaiEnabled", runtimeProperties.integration().openaiEnabled()));
 
-        return ResponseEntity.ok(payload);
-    }
+    return ResponseEntity.ok(payload);
+  }
 }
-
