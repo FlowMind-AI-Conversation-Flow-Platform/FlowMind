@@ -25,6 +25,7 @@ Intent 기반 시나리오와 LLM fallback을 연결하는 최소 하이브리�
 - intent가 애매하다
 - 표현이 복합적이거나 감정/불만이 강하다
 - 안전한 deterministic scenario가 없다
+- 금융 정책상 deterministic 자동 처리가 허용되지 않는다
 
 ## 출력 계약
 
@@ -40,3 +41,4 @@ LLM 출력은 자유 텍스트만이 아니라 다음 정보를 포함하는 구
 - prompt file naming 규칙
 - masking 규칙
 - llm error handling 정책
+- fallback 응답에서 상담원 이관 문구/조건 표준화

@@ -62,7 +62,11 @@ FlowMind는 세 가지 축으로 동작합니다.
 
 ## 지금 바로 보면 좋은 문서
 
+- [AGENTS.md](/C:/Users/ggg99/Desktop/FlowMind/FlowMind/AGENTS.md)
 - [AGENT.md](/C:/Users/ggg99/Desktop/FlowMind/FlowMind/AGENT.md)
+- [docs/guides/ai-collaboration.md](/C:/Users/ggg99/Desktop/FlowMind/FlowMind/docs/guides/ai-collaboration.md)
+- [docs/operations/orchestrator-agent-playbook.md](/C:/Users/ggg99/Desktop/FlowMind/FlowMind/docs/operations/orchestrator-agent-playbook.md)
+- [docs/operations/orchestrator-manager-automation.md](/C:/Users/ggg99/Desktop/FlowMind/FlowMind/docs/operations/orchestrator-manager-automation.md)
 - [docs/planning/PHASES.md](/C:/Users/ggg99/Desktop/FlowMind/FlowMind/docs/planning/PHASES.md)
 - [docs/planning/phases/phase-1/plan-01-project-bootstrap.md](/C:/Users/ggg99/Desktop/FlowMind/FlowMind/docs/planning/phases/phase-1/plan-01-project-bootstrap.md)
 - [backend/README.md](/C:/Users/ggg99/Desktop/FlowMind/FlowMind/backend/README.md)

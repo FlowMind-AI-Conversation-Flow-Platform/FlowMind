@@ -33,10 +33,15 @@
 
 ### Phase 2. Deterministic Core
 
-- 상태: `pending`
+- 상태: `in_progress`
+- 현재 메모:
+  - 프로젝트 주제를 `FlowMind Finance VoiceOps`로 확정
+  - 첫 도메인을 금융 본인확인/거래안내로 고정
+  - 핵심 시나리오 3개(계좌정보, 거래내역, 카드 분실/한도) 기준으로 모델링 진행
 - 문서:
   - [phase-2/plan.md](/C:/Users/ggg99/Desktop/FlowMind/FlowMind/docs/planning/phases/phase-2/plan.md)
   - [phase-2/design.md](/C:/Users/ggg99/Desktop/FlowMind/FlowMind/docs/planning/phases/phase-2/design.md)
+  - [exec-plans/active/finance-voiceops-mvp.md](/C:/Users/ggg99/Desktop/FlowMind/FlowMind/docs/planning/exec-plans/active/finance-voiceops-mvp.md)
 
 ### Phase 3. Hybrid Routing
 
