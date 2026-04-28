@@ -95,3 +95,5 @@ FlowMind Finance VoiceOps MVP 구현 계획
   - `FLOWMIND_CONFIDENCE_THRESHOLD` 설정 기반 confidence gate 적용
   - fallback reason 코드 분리(`LOW_CONFIDENCE`, `COMPLEX_REQUEST`, `EMOTION_HEAVY`)
   - dispatch trace에 `latencyMs` 필드 추가
+  - metrics에 fallback reason별 카운트 포함
+  - 운영 디버깅용 `GET /api/dispatch/traces?limit=N` 추가

@@ -97,10 +97,43 @@ class DispatchControllerTest {
   @Test
   void metricsEndpointShouldReturnSnapshot() throws Exception {
     mockMvc
+        .perform(
+            post("/api/dispatch")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(
+                    """
+                                {"sessionId":"m1","message":"아무튼 뭔가 좀 해줘"}
+                                """))
+        .andExpect(status().isOk());
+
+    mockMvc
         .perform(get("/api/dispatch/metrics"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.totalRequests").exists())
         .andExpect(jsonPath("$.fallbackRate").exists())
-        .andExpect(jsonPath("$.averageLatencyMs").exists());
+        .andExpect(jsonPath("$.averageLatencyMs").exists())
+        .andExpect(jsonPath("$.fallbackReasonCounts.LOW_CONFIDENCE").exists())
+        .andExpect(jsonPath("$.fallbackReasonCounts.COMPLEX_REQUEST").exists())
+        .andExpect(jsonPath("$.fallbackReasonCounts.EMOTION_HEAVY").exists());
+  }
+
+  @Test
+  void tracesEndpointShouldReturnRecentItems() throws Exception {
+    mockMvc
+        .perform(
+            post("/api/dispatch")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(
+                    """
+                                {"sessionId":"t1","message":"계좌 확인하고 싶어요"}
+                                """))
+        .andExpect(status().isOk());
+
+    mockMvc
+        .perform(get("/api/dispatch/traces").param("limit", "1"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$[0].sessionId").value("t1"))
+        .andExpect(jsonPath("$[0].latencyMs").exists())
+        .andExpect(jsonPath("$[0].reason").exists());
   }
 }
