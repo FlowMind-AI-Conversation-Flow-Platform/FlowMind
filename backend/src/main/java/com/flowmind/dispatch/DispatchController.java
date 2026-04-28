@@ -30,8 +30,9 @@ public class DispatchController {
   }
 
   @GetMapping("/metrics")
-  public ResponseEntity<DispatchTelemetryService.MetricsSnapshot> metrics() {
-    return ResponseEntity.ok(dispatchService.metrics());
+  public ResponseEntity<DispatchTelemetryService.MetricsSnapshot> metrics(
+      @RequestParam(defaultValue = "50") int window) {
+    return ResponseEntity.ok(dispatchService.metrics(window));
   }
 
   @GetMapping("/traces")

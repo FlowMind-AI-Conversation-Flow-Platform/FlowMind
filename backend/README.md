@@ -43,3 +43,4 @@ The bootstrap defaults are set to start without requiring a live database connec
 
 `/api/dispatch/traces` limit은 1~100 범위로 안전 보정된다.
 `/api/dispatch/metrics`는 `fallbackReasonCounts`와 `fallbackReasonRates`를 함께 제공한다.
+`/api/dispatch/metrics?window=N`은 최근 N요청 추세 지표를 제공하며 N은 1~200으로 보정된다.

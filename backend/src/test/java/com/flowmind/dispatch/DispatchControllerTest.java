@@ -107,7 +107,7 @@ class DispatchControllerTest {
         .andExpect(status().isOk());
 
     mockMvc
-        .perform(get("/api/dispatch/metrics"))
+        .perform(get("/api/dispatch/metrics").param("window", "50"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.totalRequests").exists())
         .andExpect(jsonPath("$.fallbackRate").exists())
@@ -117,7 +117,11 @@ class DispatchControllerTest {
         .andExpect(jsonPath("$.fallbackReasonCounts.EMOTION_HEAVY").exists())
         .andExpect(jsonPath("$.fallbackReasonRates.LOW_CONFIDENCE").exists())
         .andExpect(jsonPath("$.fallbackReasonRates.COMPLEX_REQUEST").exists())
-        .andExpect(jsonPath("$.fallbackReasonRates.EMOTION_HEAVY").exists());
+        .andExpect(jsonPath("$.fallbackReasonRates.EMOTION_HEAVY").exists())
+        .andExpect(jsonPath("$.metricsWindow").value(50))
+        .andExpect(jsonPath("$.recentRequestCount").exists())
+        .andExpect(jsonPath("$.recentFallbackReasonCounts.LOW_CONFIDENCE").exists())
+        .andExpect(jsonPath("$.recentFallbackReasonRates.LOW_CONFIDENCE").exists());
   }
 
   @Test
@@ -158,5 +162,18 @@ class DispatchControllerTest {
         .andExpect(jsonPath("$[0].sessionId").exists());
 
     mockMvc.perform(get("/api/dispatch/traces").param("limit", "9999")).andExpect(status().isOk());
+  }
+
+  @Test
+  void metricsEndpointShouldHandleInvalidAndLargeWindowSafely() throws Exception {
+    mockMvc
+        .perform(get("/api/dispatch/metrics").param("window", "0"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.metricsWindow").value(1));
+
+    mockMvc
+        .perform(get("/api/dispatch/metrics").param("window", "9999"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.metricsWindow").value(200));
   }
 }

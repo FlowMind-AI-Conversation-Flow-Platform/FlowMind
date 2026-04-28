@@ -106,8 +106,8 @@ public class DispatchService {
     return response;
   }
 
-  public DispatchTelemetryService.MetricsSnapshot metrics() {
-    return telemetryService.snapshot();
+  public DispatchTelemetryService.MetricsSnapshot metrics(int window) {
+    return telemetryService.snapshot(window);
   }
 
   public List<DispatchTrace> recentTraces(int limit) {
