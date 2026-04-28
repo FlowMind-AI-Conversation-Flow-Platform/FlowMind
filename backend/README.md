@@ -40,3 +40,5 @@ Invoke-WebRequest http://localhost:8080/swagger-ui.html
 - `FLOWMIND_CONFIDENCE_THRESHOLD` (default: `0.65`)
 
 The bootstrap defaults are set to start without requiring a live database connection.
+
+`/api/dispatch/traces` limit은 1~100 범위로 안전 보정된다.

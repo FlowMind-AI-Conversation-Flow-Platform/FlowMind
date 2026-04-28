@@ -136,4 +136,24 @@ class DispatchControllerTest {
         .andExpect(jsonPath("$[0].latencyMs").exists())
         .andExpect(jsonPath("$[0].reason").exists());
   }
+
+  @Test
+  void tracesEndpointShouldHandleInvalidAndLargeLimitSafely() throws Exception {
+    mockMvc
+        .perform(
+            post("/api/dispatch")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(
+                    """
+                                {"sessionId":"t2","message":"아무튼 뭔가 좀 해줘"}
+                                """))
+        .andExpect(status().isOk());
+
+    mockMvc
+        .perform(get("/api/dispatch/traces").param("limit", "0"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$[0].sessionId").exists());
+
+    mockMvc.perform(get("/api/dispatch/traces").param("limit", "9999")).andExpect(status().isOk());
+  }
 }
