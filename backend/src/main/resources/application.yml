@@ -44,6 +44,14 @@ management:
     db:
       enabled: ${FLOWMIND_DB_ENABLED:false}
 
+springdoc:
+  api-docs:
+    enabled: ${FLOWMIND_SWAGGER_ENABLED:true}
+    path: /v3/api-docs
+  swagger-ui:
+    enabled: ${FLOWMIND_SWAGGER_ENABLED:true}
+    path: /swagger-ui.html
+
 logging:
   level:
     root: INFO
