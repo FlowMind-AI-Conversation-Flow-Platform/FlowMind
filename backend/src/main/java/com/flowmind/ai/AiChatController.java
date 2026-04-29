@@ -37,6 +37,8 @@ public class AiChatController {
               Map.of(
                   "requestId",
                   requestId,
+                  "status",
+                  "error",
                   "errorCode",
                   "INVALID_REQUEST",
                   "error",
@@ -49,13 +51,16 @@ public class AiChatController {
       String answer = aiChatService.chat(message);
       long latencyMs = Duration.between(start, Instant.now()).toMillis();
       return ResponseEntity.ok(
-          new AiChatResponse(answer, "ollama", chatModel, latencyMs, sessionId, requestId));
+          new AiChatResponse(
+              "success", answer, "ollama", chatModel, latencyMs, sessionId, requestId));
     } catch (RuntimeException ex) {
       return ResponseEntity.status(503)
           .body(
               Map.of(
                   "requestId",
                   requestId,
+                  "status",
+                  "error",
                   "errorCode",
                   "LLM_UNAVAILABLE",
                   "error",

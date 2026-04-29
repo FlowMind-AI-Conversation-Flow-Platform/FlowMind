@@ -1,6 +1,7 @@
 package com.flowmind.ai;
 
 public record AiChatResponse(
+    String status,
     String answer,
     String provider,
     String model,
