@@ -339,6 +339,48 @@ export function validatePhasesStatusText(markdown) {
   return { ok: errors.length === 0, errors };
 }
 
+const ALLOWED_PHASE_STATUS = new Set(['pending', 'in_progress', 'completed']);
+const ALLOWED_ORCHESTRATOR_STATUS = new Set(['planned', 'running', 'dispatched', 'failed', 'done']);
+
+export function validatePlanningStatusMarkers(markdown) {
+  const lines = markdown.split(/\r?\n/);
+  const errors = [];
+
+  for (let i = 0; i < lines.length; i += 1) {
+    const match = lines[i].match(/상태:\s*`([^`]+)`/);
+    if (!match) continue;
+    if (!ALLOWED_PHASE_STATUS.has(match[1])) {
+      errors.push(`invalid planning status "${match[1]}" near line ${i + 1}`);
+    }
+  }
+
+  return { ok: errors.length === 0, errors };
+}
+
+export function validateOrchestratorAutomationStatusText(markdown) {
+  const lines = markdown.split(/\r?\n/);
+  const statusLine = lines.find((line) => line.includes('상태값:'));
+  if (!statusLine) {
+    return { ok: false, errors: ['missing orchestrator 상태값 line'] };
+  }
+
+  const values = Array.from(statusLine.matchAll(/`([^`]+)`/g)).map((entry) => entry[1].trim());
+  const errors = [];
+
+  for (const value of values) {
+    if (!ALLOWED_ORCHESTRATOR_STATUS.has(value)) {
+      errors.push(`invalid orchestrator status "${value}"`);
+    }
+  }
+  for (const required of ALLOWED_ORCHESTRATOR_STATUS) {
+    if (!values.includes(required)) {
+      errors.push(`missing orchestrator status "${required}"`);
+    }
+  }
+
+  return { ok: errors.length === 0, errors };
+}
+
 async function runDocsPlanningLint(worktreeAbsPath, changedFiles, domain) {
   const failures = [];
   const markdownFiles = changedFiles.filter(
@@ -351,6 +393,18 @@ async function runDocsPlanningLint(worktreeAbsPath, changedFiles, domain) {
     if (!exists) continue;
     const brokenLinks = await collectBrokenLinksInFile(fileAbsPath, worktreeAbsPath);
     failures.push(...brokenLinks.map((entry) => `broken-link: ${entry}`));
+
+    const markdown = await fs.readFile(fileAbsPath, 'utf8');
+    if (file.startsWith('docs/planning/')) {
+      const planningStatus = validatePlanningStatusMarkers(markdown);
+      failures.push(...planningStatus.errors.map((error) => `planning-status: ${file}: ${error}`));
+    }
+    if (file === 'docs/operations/orchestrator-manager-automation.md') {
+      const orchestratorStatus = validateOrchestratorAutomationStatusText(markdown);
+      failures.push(
+        ...orchestratorStatus.errors.map((error) => `orchestrator-status: ${file}: ${error}`)
+      );
+    }
   }
 
   const shouldCheckPhases =
