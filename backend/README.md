@@ -67,3 +67,4 @@ The bootstrap defaults are set to start without requiring a live database connec
 `/api/ai/chat` 응답에는 `status`, `provider`, `model`, `latencyMs`, `sessionId`, `requestId`가 포함된다.
 `/api/ai/chat` 오류 응답에는 `errorCode`(`INVALID_REQUEST`, `LLM_UNAVAILABLE`)가 포함된다.
 `/api/ai/chat` 오류 응답에는 `status=error`, `timestamp`(ISO-8601), `requestId`도 포함된다.
+`/api/ai/chat` 요청의 `message` 길이는 최대 2000자로 제한된다.

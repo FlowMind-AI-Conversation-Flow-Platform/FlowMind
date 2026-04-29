@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/ai")
 public class AiChatController {
 
+  private static final int MAX_MESSAGE_LENGTH = 2000;
   private final AiChatService aiChatService;
   private final String chatModel;
 
@@ -43,6 +44,21 @@ public class AiChatController {
                   "INVALID_REQUEST",
                   "error",
                   "message is required",
+                  "timestamp",
+                  Instant.now().toString()));
+    }
+    if (message.length() > MAX_MESSAGE_LENGTH) {
+      return ResponseEntity.badRequest()
+          .body(
+              Map.of(
+                  "requestId",
+                  requestId,
+                  "status",
+                  "error",
+                  "errorCode",
+                  "INVALID_REQUEST",
+                  "error",
+                  "message length must be <= " + MAX_MESSAGE_LENGTH,
                   "timestamp",
                   Instant.now().toString()));
     }

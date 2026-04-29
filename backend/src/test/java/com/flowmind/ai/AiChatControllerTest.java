@@ -5,6 +5,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -58,6 +60,23 @@ class AiChatControllerTest {
         .andExpect(jsonPath("$.latencyMs").exists())
         .andExpect(jsonPath("$.sessionId").value("s-1"))
         .andExpect(jsonPath("$.requestId").exists());
+  }
+
+  @Test
+  void shouldReturnBadRequestWhenMessageTooLong() throws Exception {
+    String longMessage = IntStream.range(0, 2001).mapToObj(i -> "a").collect(Collectors.joining());
+
+    mockMvc
+        .perform(
+            post("/api/ai/chat")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"message\":\"" + longMessage + "\"}"))
+        .andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.requestId").exists())
+        .andExpect(jsonPath("$.status").value("error"))
+        .andExpect(jsonPath("$.errorCode").value("INVALID_REQUEST"))
+        .andExpect(jsonPath("$.error").value("message length must be <= 2000"))
+        .andExpect(jsonPath("$.timestamp").exists());
   }
 
   @Test
