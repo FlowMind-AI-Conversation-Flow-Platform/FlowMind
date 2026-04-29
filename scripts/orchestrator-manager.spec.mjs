@@ -9,6 +9,8 @@ import {
   slugify,
   extractMarkdownLinks,
   validatePhasesStatusText,
+  validatePlanningStatusMarkers,
+  validateOrchestratorAutomationStatusText,
 } from './orchestrator-manager.mjs';
 
 function run(name, fn) {
@@ -110,6 +112,26 @@ run('validatePhasesStatusText validates status values', () => {
 `;
   assert.equal(validatePhasesStatusText(valid).ok, true);
   assert.equal(validatePhasesStatusText(invalid).ok, false);
+});
+
+run('validatePlanningStatusMarkers validates planning 상태 markers', () => {
+  const valid = `
+- 상태: \`pending\`
+- 상태: \`in_progress\`
+- 상태: \`completed\`
+`;
+  const invalid = `
+- 상태: \`done\`
+`;
+  assert.equal(validatePlanningStatusMarkers(valid).ok, true);
+  assert.equal(validatePlanningStatusMarkers(invalid).ok, false);
+});
+
+run('validateOrchestratorAutomationStatusText validates orchestrator status catalog', () => {
+  const valid = '- 상태값: `planned`, `running`, `dispatched`, `failed`, `done`';
+  const invalid = '- 상태값: `planned`, `running`, `done`';
+  assert.equal(validateOrchestratorAutomationStatusText(valid).ok, true);
+  assert.equal(validateOrchestratorAutomationStatusText(invalid).ok, false);
 });
 
 console.log('All orchestrator-manager checks passed.');

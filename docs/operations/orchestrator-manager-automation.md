@@ -68,8 +68,10 @@ node scripts/orchestrator-manager.mjs run --execute --create-worktrees --comment
 
 3. docs/planning lint
 - 변경된 `docs/*.md` 링크 무결성 검사
+- `docs/planning/*.md`의 `상태: \`...\`` 값 검사
 - `docs/planning/PHASES.md`의 phase 상태 형식/값 검사
 - 허용 상태값: `pending`, `in_progress`, `completed`
+- `docs/operations/orchestrator-manager-automation.md`의 상태 카탈로그(`planned`, `running`, `dispatched`, `failed`, `done`) 일관성 검사
 
 ## PR 템플릿 자동 연동
 
