@@ -66,3 +66,4 @@ The bootstrap defaults are set to start without requiring a live database connec
 최근 구간 요약으로 `recentFallbackCount`, `recentFallbackRate`, `recentFallbackLatencyAvgMs`도 함께 제공된다.
 `/api/ai/chat` 응답에는 `latencyMs`, `sessionId`가 포함된다.
 `/api/ai/chat` 오류 응답에는 `errorCode`(`INVALID_REQUEST`, `LLM_UNAVAILABLE`)가 포함된다.
+`/api/ai/chat` 오류 응답에는 `timestamp`(ISO-8601)도 포함된다.
