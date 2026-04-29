@@ -85,6 +85,9 @@ node scripts/orchestrator-manager.mjs run --execute --create-worktrees --comment
 
 ```powershell
 gh pr create --title "feat: ..." --body-file .codex/orchestrator/pr-bodies/issue-123.md
+
+# 자동 연동 스크립트(브랜치 feat/<issue>-... 에서 issue 추론)
+node scripts/create-pr-from-issue.mjs --base dev
 ```
 
 ## 전제 조건
