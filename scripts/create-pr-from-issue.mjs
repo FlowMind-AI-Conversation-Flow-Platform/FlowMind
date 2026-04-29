@@ -1,0 +1,112 @@
+#!/usr/bin/env node
+
+import { execFileSync } from 'node:child_process';
+import path from 'node:path';
+
+function parseArgs(argv) {
+  const args = {
+    issue: null,
+    base: 'dev',
+    head: null,
+    title: null,
+    dryRun: false,
+  };
+
+  const tokens = argv.slice(2);
+  while (tokens.length > 0) {
+    const token = tokens.shift();
+    switch (token) {
+      case '--issue':
+        args.issue = Number(tokens.shift());
+        break;
+      case '--base':
+        args.base = tokens.shift() || 'dev';
+        break;
+      case '--head':
+        args.head = tokens.shift() || null;
+        break;
+      case '--title':
+        args.title = tokens.shift() || null;
+        break;
+      case '--dry-run':
+        args.dryRun = true;
+        break;
+      case '--help':
+        printHelp();
+        process.exit(0);
+      default:
+        throw new Error(`Unknown option: ${token}`);
+    }
+  }
+  return args;
+}
+
+function printHelp() {
+  console.log(`Usage:
+  node scripts/create-pr-from-issue.mjs [options]
+
+Options:
+  --issue <number>   Issue number (default: infer from current branch feat/<n>-...)
+  --base <branch>    Base branch (default: dev)
+  --head <branch>    Head branch (default: current branch)
+  --title "<text>"   PR title (default: issue title)
+  --dry-run          Print gh command only
+  --help             Show help
+`);
+}
+
+function gitText(args) {
+  return execFileSync('git', args, { encoding: 'utf8' }).trim();
+}
+
+function ghJson(args) {
+  return JSON.parse(execFileSync('gh', args, { encoding: 'utf8' }));
+}
+
+function inferIssueFromBranch(branch) {
+  const match = branch.match(/^feat\/(\d+)-/);
+  if (!match) return null;
+  return Number(match[1]);
+}
+
+function buildBodyPath(issueNumber) {
+  return path.join('.codex', 'orchestrator', 'pr-bodies', `issue-${issueNumber}.md`);
+}
+
+function main() {
+  const args = parseArgs(process.argv);
+  const currentBranch = gitText(['branch', '--show-current']);
+  const head = args.head || currentBranch;
+  const issueNumber = args.issue || inferIssueFromBranch(head);
+
+  if (!issueNumber || !Number.isFinite(issueNumber)) {
+    throw new Error('Issue number is required. Use --issue <number> or branch feat/<n>-... pattern.');
+  }
+
+  const issue = ghJson(['issue', 'view', String(issueNumber), '--json', 'title']);
+  const title = args.title || issue.title;
+  const bodyFile = buildBodyPath(issueNumber);
+
+  const command = [
+    'pr',
+    'create',
+    '--base',
+    args.base,
+    '--head',
+    head,
+    '--title',
+    title,
+    '--body-file',
+    bodyFile,
+  ];
+
+  if (args.dryRun) {
+    console.log(`gh ${command.map((part) => (part.includes(' ') ? `"${part}"` : part)).join(' ')}`);
+    return;
+  }
+
+  const url = execFileSync('gh', command, { encoding: 'utf8' }).trim();
+  console.log(url);
+}
+
+main();
