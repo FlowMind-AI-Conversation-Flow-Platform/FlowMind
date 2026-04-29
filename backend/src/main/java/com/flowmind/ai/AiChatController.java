@@ -26,7 +26,11 @@ public class AiChatController {
     String sessionId = request == null ? null : request.sessionId();
     if (message == null || message.isBlank()) {
       return ResponseEntity.badRequest()
-          .body(Map.of("errorCode", "INVALID_REQUEST", "error", "message is required"));
+          .body(
+              Map.of(
+                  "errorCode", "INVALID_REQUEST",
+                  "error", "message is required",
+                  "timestamp", Instant.now().toString()));
     }
 
     try {
@@ -37,9 +41,14 @@ public class AiChatController {
       return ResponseEntity.status(503)
           .body(
               Map.of(
-                  "errorCode", "LLM_UNAVAILABLE",
-                  "error", "llm_unavailable",
-                  "detail", ex.getMessage()));
+                  "errorCode",
+                  "LLM_UNAVAILABLE",
+                  "error",
+                  "llm_unavailable",
+                  "detail",
+                  ex.getMessage(),
+                  "timestamp",
+                  Instant.now().toString()));
     }
   }
 }

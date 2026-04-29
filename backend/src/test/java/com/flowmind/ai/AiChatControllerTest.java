@@ -32,7 +32,8 @@ class AiChatControllerTest {
                     """))
         .andExpect(status().isBadRequest())
         .andExpect(jsonPath("$.errorCode").value("INVALID_REQUEST"))
-        .andExpect(jsonPath("$.error").value("message is required"));
+        .andExpect(jsonPath("$.error").value("message is required"))
+        .andExpect(jsonPath("$.timestamp").exists());
   }
 
   @Test
@@ -85,6 +86,7 @@ class AiChatControllerTest {
         .andExpect(status().isServiceUnavailable())
         .andExpect(jsonPath("$.errorCode").value("LLM_UNAVAILABLE"))
         .andExpect(jsonPath("$.error").value("llm_unavailable"))
-        .andExpect(jsonPath("$.detail").exists());
+        .andExpect(jsonPath("$.detail").exists())
+        .andExpect(jsonPath("$.timestamp").exists());
   }
 }
