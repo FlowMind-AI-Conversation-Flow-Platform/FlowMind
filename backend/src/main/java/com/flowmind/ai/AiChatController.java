@@ -3,6 +3,7 @@ package com.flowmind.ai;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Map;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,9 +15,13 @@ import org.springframework.web.bind.annotation.RestController;
 public class AiChatController {
 
   private final AiChatService aiChatService;
+  private final String chatModel;
 
-  public AiChatController(AiChatService aiChatService) {
+  public AiChatController(
+      AiChatService aiChatService,
+      @Value("${spring.ai.ollama.chat.options.model:qwen2.5:7b}") String chatModel) {
     this.aiChatService = aiChatService;
+    this.chatModel = chatModel;
   }
 
   @PostMapping("/chat")
@@ -36,7 +41,8 @@ public class AiChatController {
     try {
       String answer = aiChatService.chat(message);
       long latencyMs = Duration.between(start, Instant.now()).toMillis();
-      return ResponseEntity.ok(new AiChatResponse(answer, "ollama", latencyMs, sessionId));
+      return ResponseEntity.ok(
+          new AiChatResponse(answer, "ollama", chatModel, latencyMs, sessionId));
     } catch (RuntimeException ex) {
       return ResponseEntity.status(503)
           .body(

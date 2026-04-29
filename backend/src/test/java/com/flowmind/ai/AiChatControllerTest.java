@@ -50,6 +50,7 @@ class AiChatControllerTest {
                     """))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.provider").value("ollama"))
+        .andExpect(jsonPath("$.model").exists())
         .andExpect(jsonPath("$.answer").value("안녕하세요."))
         .andExpect(jsonPath("$.latencyMs").exists())
         .andExpect(jsonPath("$.sessionId").value("s-1"));
