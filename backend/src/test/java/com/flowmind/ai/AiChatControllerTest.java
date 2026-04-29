@@ -31,6 +31,7 @@ class AiChatControllerTest {
                     {"message":" "}
                     """))
         .andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.requestId").exists())
         .andExpect(jsonPath("$.errorCode").value("INVALID_REQUEST"))
         .andExpect(jsonPath("$.error").value("message is required"))
         .andExpect(jsonPath("$.timestamp").exists());
@@ -53,7 +54,8 @@ class AiChatControllerTest {
         .andExpect(jsonPath("$.model").exists())
         .andExpect(jsonPath("$.answer").value("안녕하세요."))
         .andExpect(jsonPath("$.latencyMs").exists())
-        .andExpect(jsonPath("$.sessionId").value("s-1"));
+        .andExpect(jsonPath("$.sessionId").value("s-1"))
+        .andExpect(jsonPath("$.requestId").exists());
   }
 
   @Test
@@ -69,7 +71,8 @@ class AiChatControllerTest {
                     """))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.answer").value("응답"))
-        .andExpect(jsonPath("$.sessionId").isEmpty());
+        .andExpect(jsonPath("$.sessionId").isEmpty())
+        .andExpect(jsonPath("$.requestId").exists());
   }
 
   @Test
@@ -88,6 +91,7 @@ class AiChatControllerTest {
         .andExpect(jsonPath("$.errorCode").value("LLM_UNAVAILABLE"))
         .andExpect(jsonPath("$.error").value("llm_unavailable"))
         .andExpect(jsonPath("$.detail").exists())
-        .andExpect(jsonPath("$.timestamp").exists());
+        .andExpect(jsonPath("$.timestamp").exists())
+        .andExpect(jsonPath("$.requestId").exists());
   }
 }

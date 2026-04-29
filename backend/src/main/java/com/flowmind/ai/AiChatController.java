@@ -3,6 +3,7 @@ package com.flowmind.ai;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Map;
+import java.util.UUID;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,26 +28,34 @@ public class AiChatController {
   @PostMapping("/chat")
   public ResponseEntity<?> chat(@RequestBody AiChatRequest request) {
     Instant start = Instant.now();
+    String requestId = UUID.randomUUID().toString();
     String message = request == null ? null : request.message();
     String sessionId = request == null ? null : request.sessionId();
     if (message == null || message.isBlank()) {
       return ResponseEntity.badRequest()
           .body(
               Map.of(
-                  "errorCode", "INVALID_REQUEST",
-                  "error", "message is required",
-                  "timestamp", Instant.now().toString()));
+                  "requestId",
+                  requestId,
+                  "errorCode",
+                  "INVALID_REQUEST",
+                  "error",
+                  "message is required",
+                  "timestamp",
+                  Instant.now().toString()));
     }
 
     try {
       String answer = aiChatService.chat(message);
       long latencyMs = Duration.between(start, Instant.now()).toMillis();
       return ResponseEntity.ok(
-          new AiChatResponse(answer, "ollama", chatModel, latencyMs, sessionId));
+          new AiChatResponse(answer, "ollama", chatModel, latencyMs, sessionId, requestId));
     } catch (RuntimeException ex) {
       return ResponseEntity.status(503)
           .body(
               Map.of(
+                  "requestId",
+                  requestId,
                   "errorCode",
                   "LLM_UNAVAILABLE",
                   "error",
