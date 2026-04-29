@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 import { execFileSync } from 'node:child_process';
+import fs from 'node:fs';
 import path from 'node:path';
 
 function parseArgs(argv) {
@@ -73,6 +74,31 @@ function buildBodyPath(issueNumber) {
   return path.join('.codex', 'orchestrator', 'pr-bodies', `issue-${issueNumber}.md`);
 }
 
+function resolveBodyArgs(issueNumber) {
+  const bodyFile = buildBodyPath(issueNumber);
+  if (fs.existsSync(bodyFile)) {
+    return ['--body-file', bodyFile];
+  }
+  const fallbackBody = [
+    '## 변경 내용',
+    '- 이번 PR에서 바꾼 핵심 내용',
+    '',
+    '## 핸드오프: 변경 파일 목록',
+    '- (자동 생성 PR body 파일이 없어 수동 보완 필요)',
+    '',
+    '## 핸드오프: 검증 결과',
+    '- (자동 생성 PR body 파일이 없어 수동 보완 필요)',
+    '',
+    '## 핸드오프: 남은 리스크',
+    '- (자동 생성 PR body 파일이 없어 수동 보완 필요)',
+    '',
+    '## 관련 이슈',
+    `- closes #${issueNumber}`,
+    '',
+  ].join('\n');
+  return ['--body', fallbackBody];
+}
+
 function main() {
   const args = parseArgs(process.argv);
   const currentBranch = gitText(['branch', '--show-current']);
@@ -85,7 +111,7 @@ function main() {
 
   const issue = ghJson(['issue', 'view', String(issueNumber), '--json', 'title']);
   const title = args.title || issue.title;
-  const bodyFile = buildBodyPath(issueNumber);
+  const bodyArgs = resolveBodyArgs(issueNumber);
 
   const command = [
     'pr',
@@ -96,8 +122,7 @@ function main() {
     head,
     '--title',
     title,
-    '--body-file',
-    bodyFile,
+    ...bodyArgs,
   ];
 
   if (args.dryRun) {
