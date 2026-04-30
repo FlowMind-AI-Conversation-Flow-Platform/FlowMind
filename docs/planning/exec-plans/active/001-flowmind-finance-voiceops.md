@@ -1,7 +1,7 @@
 # FlowMind Finance VoiceOps MVP Execution Plan
 
 - source-spec: specs/001-flowmind-finance-voiceops/spec.md
-- generated-at: 2026-04-30T08:24:42.442Z
+- generated-at: 2026-04-30T08:35:52.276Z
 
 ## 제목
 - FlowMind Finance VoiceOps MVP
