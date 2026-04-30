@@ -1,7 +1,7 @@
 # FlowMind Finance VoiceOps MVP Execution Plan
 
 - source-spec: specs/001-flowmind-finance-voiceops/spec.md
-- generated-at: 2026-04-30T08:35:52.276Z
+- generated-at: 2026-04-30T09:11:25.213Z
 
 ## 제목
 - FlowMind Finance VoiceOps MVP
@@ -12,14 +12,13 @@
 - **FR-003**: System MUST apply identity verification before returning account-sensitive information.
 - **FR-004**: System MUST route to LLM fallback when confidence is below threshold, request is composite, or complaint/sentiment escalation is detected.
 - **FR-005**: System MUST return standardized response envelope including `status`, `requestId`, and timestamped errors where applicable.
+- **FR-006**: System MUST persist fallback reason and dispatch trace for each request.
 
 ## 범위
-- Developed independently
-- Tested independently
-- Deployed independently
-- Demonstrated to users independently
 1. **Given** 고객이 인증 슬롯을 모두 제공한 상태, **When** 계좌 정보를 요청하면, **Then** 인증 성공 후 계좌 요약이 반환된다.
 2. **Given** 인증 슬롯 일부가 누락된 상태, **When** 계좌 정보를 요청하면, **Then** 누락 슬롯에 대한 후속 질문이 반환된다.
+1. **Given** 계좌와 기간만 제공된 상태, **When** 거래내역 조회 요청이 들어오면, **Then** 거래유형 누락 질문 후 슬롯 충족 시 조회 결과를 반환한다.
+1. **Given** 고객이 분실정지를 요청한 상태, **When** 인증이 완료되면, **Then** 분실정지 프로세스로 분기하고 완료/상담원 연결 응답을 반환한다.
 
 ## 비범위
 - 외부 연계 시스템 실제 운영 전환

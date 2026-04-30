@@ -74,6 +74,24 @@ function firstBulletLines(block, max = 6) {
   return lines.length > 0 ? lines : ['- (spec에서 수동 보완 필요)'];
 }
 
+function collectPatternLines(block, pattern, max = 6) {
+  const lines = block
+    .split(/\r?\n/)
+    .map((line) => line.trim())
+    .filter((line) => pattern.test(line))
+    .slice(0, max);
+  return lines.length > 0 ? lines : ['- (spec에서 수동 보완 필요)'];
+}
+
+function storyLines(block, max = 6) {
+  const lines = block
+    .split(/\r?\n/)
+    .map((line) => line.trim())
+    .filter((line) => /^\d+\.\s+\*\*Given\*\*/.test(line))
+    .slice(0, max);
+  return lines.length > 0 ? lines : ['- (spec에서 수동 보완 필요)'];
+}
+
 function buildPlanMarkdown(featureId, specText) {
   const titleMatch = specText.match(/^#\s+Feature Specification:\s*(.+)$/m);
   const featureTitle = titleMatch ? titleMatch[1].trim() : featureId;
@@ -82,9 +100,9 @@ function buildPlanMarkdown(featureId, specText) {
   const assumptions = findSectionByPrefix(specText, 'Assumptions');
   const stories = findSectionByPrefix(specText, 'User Scenarios & Testing');
 
-  const goalBullets = firstBulletLines(requirements, 5);
-  const successBullets = firstBulletLines(criteria, 5);
-  const scopeBullets = firstBulletLines(stories, 6);
+  const goalBullets = collectPatternLines(requirements, /^- \*\*FR-\d+\*\*:/, 6);
+  const successBullets = collectPatternLines(criteria, /^- \*\*SC-\d+\*\*:/, 6);
+  const scopeBullets = storyLines(stories, 6);
   const assumptionBullets = firstBulletLines(assumptions, 4);
 
   return [
