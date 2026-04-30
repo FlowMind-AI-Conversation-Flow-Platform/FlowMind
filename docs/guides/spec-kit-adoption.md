@@ -70,6 +70,9 @@ node scripts/sync-spec-to-planning.mjs --feature 001-flowmind-finance-voiceops -
 ```
 
 - 생성 대상: `docs/planning/exec-plans/active/<feature>.md`
+- 실행 후 요약 리포트가 출력된다:
+  - `total`, `created`, `updated`, `skipped`
+  - 처리 파일 목록
 - 모드:
   - `overwrite` (기본): 전체 재생성
   - `append-notes`: 기존 문서의 수동 구간(`리스크`, `작업 단계`, `진행 상태`) 보존

@@ -215,6 +215,24 @@ function buildPlanMarkdown(featureId, specText) {
   ].join('\n');
 }
 
+function printSummary(results, dryRun) {
+  const created = results.filter((r) => r.action === 'created').length;
+  const updated = results.filter((r) => r.action === 'updated').length;
+  const skipped = results.filter((r) => r.action === 'skipped').length;
+
+  console.log('');
+  console.log('SYNC SUMMARY');
+  console.log(`- mode: ${dryRun ? 'dry-run' : 'apply'}`);
+  console.log(`- total: ${results.length}`);
+  console.log(`- created: ${created}`);
+  console.log(`- updated: ${updated}`);
+  console.log(`- skipped: ${skipped}`);
+  console.log('- files:');
+  for (const r of results) {
+    console.log(`  - [${r.action}] ${r.file}`);
+  }
+}
+
 async function main() {
   const args = parseArgs(process.argv);
   const targets = [];
@@ -240,6 +258,7 @@ async function main() {
     throw new Error('No spec targets found.');
   }
 
+  const results = [];
   for (const featureId of targets) {
     const specPath = path.resolve('specs', featureId, 'spec.md');
     const outputFileName = `${featureId}.md`;
@@ -248,26 +267,40 @@ async function main() {
     const specText = await fs.readFile(specPath, 'utf8');
     const generatedPlanText = buildPlanMarkdown(featureId, specText);
     let planText = generatedPlanText;
+    let existingText = null;
 
     if (args.mode === 'append-notes') {
       try {
-        const existing = await fs.readFile(outputPath, 'utf8');
-        planText = mergePlanWithExisting(generatedPlanText, existing);
+        existingText = await fs.readFile(outputPath, 'utf8');
+        planText = mergePlanWithExisting(generatedPlanText, existingText);
       } catch {
         planText = generatedPlanText;
       }
+    } else {
+      try {
+        existingText = await fs.readFile(outputPath, 'utf8');
+      } catch {
+        existingText = null;
+      }
     }
+
+    const nextText = `${planText}\n`;
+    const action = existingText === null ? 'created' : existingText === nextText ? 'skipped' : 'updated';
 
     if (args.dryRun) {
       console.log(`DRY-RUN: ${outputPath} (mode=${args.mode})`);
       console.log(planText);
+      results.push({ file: path.relative(process.cwd(), outputPath).replaceAll('\\', '/'), action });
       continue;
     }
 
     await fs.mkdir(path.dirname(outputPath), { recursive: true });
-    await fs.writeFile(outputPath, `${planText}\n`, 'utf8');
-    console.log(`Created: ${outputPath}`);
+    await fs.writeFile(outputPath, nextText, 'utf8');
+    console.log(`${action === 'created' ? 'Created' : action === 'updated' ? 'Updated' : 'Unchanged'}: ${outputPath}`);
+    results.push({ file: path.relative(process.cwd(), outputPath).replaceAll('\\', '/'), action });
   }
+
+  printSummary(results, args.dryRun);
 }
 
 main().catch((error) => {
