@@ -381,6 +381,83 @@ export function validateOrchestratorAutomationStatusText(markdown) {
   return { ok: errors.length === 0, errors };
 }
 
+export function parseSourceSpecFromPlan(markdown) {
+  const match = markdown.match(/^\s*-\s*source-spec:\s*(.+)\s*$/m);
+  return match ? match[1].trim() : null;
+}
+
+export function validateSpecPlanningSyncPair(specPath, planPath, planMarkdown) {
+  const errors = [];
+  const sourceSpec = parseSourceSpecFromPlan(planMarkdown);
+  if (!sourceSpec) {
+    errors.push(`missing source-spec meta in ${planPath}`);
+    return { ok: false, errors };
+  }
+
+  const normalizedSource = sourceSpec.replaceAll('\\', '/');
+  const normalizedSpecPath = specPath.replaceAll('\\', '/');
+  if (normalizedSource !== normalizedSpecPath) {
+    errors.push(`source-spec mismatch in ${planPath}: expected ${normalizedSpecPath}, got ${normalizedSource}`);
+  }
+
+  const specFeature = normalizedSpecPath.match(/^specs\/([^/]+)\/spec\.md$/)?.[1];
+  const planFeature = planPath.match(/^docs\/planning\/exec-plans\/active\/(.+)\.md$/)?.[1];
+  if (!specFeature || !planFeature || specFeature !== planFeature) {
+    errors.push(`feature id mismatch between ${specPath} and ${planPath}`);
+  }
+
+  return { ok: errors.length === 0, errors };
+}
+
+async function validateSpecPlanningSync(worktreeAbsPath, changedFiles) {
+  const failures = [];
+  const changedSpecs = changedFiles.filter((file) => /^specs\/[^/]+\/spec\.md$/.test(file));
+  const changedPlans = changedFiles.filter((file) => /^docs\/planning\/exec-plans\/active\/.+\.md$/.test(file));
+
+  const planByFeature = new Map();
+  for (const planPath of changedPlans) {
+    const feature = planPath.match(/^docs\/planning\/exec-plans\/active\/(.+)\.md$/)?.[1];
+    if (feature) planByFeature.set(feature, planPath);
+  }
+
+  for (const specPath of changedSpecs) {
+    const feature = specPath.match(/^specs\/([^/]+)\/spec\.md$/)?.[1];
+    if (!feature) continue;
+    const pairedPlan = planByFeature.get(feature);
+    if (!pairedPlan) {
+      failures.push(`spec-sync: missing paired planning file for ${specPath}`);
+      continue;
+    }
+    const planAbsPath = path.resolve(worktreeAbsPath, pairedPlan);
+    const exists = await fileExists(planAbsPath);
+    if (!exists) {
+      failures.push(`spec-sync: missing file ${pairedPlan}`);
+      continue;
+    }
+    const planMarkdown = await fs.readFile(planAbsPath, 'utf8');
+    const result = validateSpecPlanningSyncPair(specPath, pairedPlan, planMarkdown);
+    failures.push(...result.errors.map((error) => `spec-sync: ${error}`));
+  }
+
+  for (const planPath of changedPlans) {
+    const feature = planPath.match(/^docs\/planning\/exec-plans\/active\/(.+)\.md$/)?.[1];
+    if (!feature) continue;
+    const expectedSpec = `specs/${feature}/spec.md`;
+    const specAbsPath = path.resolve(worktreeAbsPath, expectedSpec);
+    const specExists = await fileExists(specAbsPath);
+    if (!specExists) {
+      failures.push(`spec-sync: missing source spec file ${expectedSpec}`);
+      continue;
+    }
+    const planAbsPath = path.resolve(worktreeAbsPath, planPath);
+    const planMarkdown = await fs.readFile(planAbsPath, 'utf8');
+    const result = validateSpecPlanningSyncPair(expectedSpec, planPath, planMarkdown);
+    failures.push(...result.errors.map((error) => `spec-sync: ${error}`));
+  }
+
+  return failures;
+}
+
 async function runDocsPlanningLint(worktreeAbsPath, changedFiles, domain) {
   const failures = [];
   const markdownFiles = changedFiles.filter(
@@ -423,6 +500,9 @@ async function runDocsPlanningLint(worktreeAbsPath, changedFiles, domain) {
       failures.push(...validation.errors.map((error) => `phase-status: ${error}`));
     }
   }
+
+  const syncFailures = await validateSpecPlanningSync(worktreeAbsPath, changedFiles);
+  failures.push(...syncFailures);
 
   return failures;
 }
