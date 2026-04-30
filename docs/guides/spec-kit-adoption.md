@@ -52,6 +52,17 @@ node scripts/orchestrator-manager.mjs run --execute --create-worktrees --comment
 ## 5) 운영 규칙
 
 - PR 본문은 우선 `.codex/orchestrator/pr-bodies/issue-<n>.md`를 사용한다.
+- spec 산출물을 planning 실행계획으로 동기화할 때:
+
+```powershell
+# 미리보기
+node scripts/sync-spec-to-planning.mjs --feature 001-flowmind-finance-voiceops --dry-run
+
+# 파일 생성
+node scripts/sync-spec-to-planning.mjs --feature 001-flowmind-finance-voiceops
+```
+
+- 생성 대상: `docs/planning/exec-plans/active/<feature>.md`
 - 자동 생성이 없는 경우:
 
 ```powershell
