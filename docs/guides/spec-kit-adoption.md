@@ -63,6 +63,10 @@ node scripts/sync-spec-to-planning.mjs --feature 001-flowmind-finance-voiceops
 ```
 
 - 생성 대상: `docs/planning/exec-plans/active/<feature>.md`
+- 추출 기준:
+  - 목표: `FR-*` 요구사항 라인 우선
+  - 범위: `Given/When/Then` 수용 시나리오 우선
+  - 검증 기준: `SC-*` 성공지표 라인 우선
 - 자동 생성이 없는 경우:
 
 ```powershell
