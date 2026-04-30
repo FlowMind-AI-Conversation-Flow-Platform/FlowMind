@@ -60,9 +60,15 @@ node scripts/sync-spec-to-planning.mjs --feature 001-flowmind-finance-voiceops -
 
 # 파일 생성
 node scripts/sync-spec-to-planning.mjs --feature 001-flowmind-finance-voiceops
+
+# 수동 노트 보존 모드(리스크/진행 상태/작업 단계 유지)
+node scripts/sync-spec-to-planning.mjs --feature 001-flowmind-finance-voiceops --mode append-notes
 ```
 
 - 생성 대상: `docs/planning/exec-plans/active/<feature>.md`
+- 모드:
+  - `overwrite` (기본): 전체 재생성
+  - `append-notes`: 기존 문서의 수동 구간(`리스크`, `작업 단계`, `진행 상태`) 보존
 - 추출 기준:
   - 목표: `FR-*` 요구사항 라인 우선
   - 범위: `Given/When/Then` 수용 시나리오 우선

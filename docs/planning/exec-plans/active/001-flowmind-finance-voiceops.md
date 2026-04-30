@@ -1,8 +1,7 @@
 # FlowMind Finance VoiceOps MVP Execution Plan
 
 - source-spec: specs/001-flowmind-finance-voiceops/spec.md
-- generated-at: 2026-04-30T09:11:25.213Z
-
+- generated-at: 2026-04-30T09:25:41.895Z
 ## 제목
 - FlowMind Finance VoiceOps MVP
 
@@ -30,9 +29,7 @@
 - specs/**
 
 ## 리스크
-- spec 요구사항 대비 구현 누락 가능성
-- 슬롯/의도 경계 케이스 오분류 가능성
-- LLM fallback 정책 과/소적용 가능성
+- 사용자 수동메모: 운영 승인 필요
 
 ## 작업 단계
 1. spec 요구사항 매핑
@@ -54,4 +51,4 @@
 - LLM fallback은 로컬/저비용 실행 구성을 우선 사용한다.
 
 ## 진행 상태
-- `pending`
+- `in_progress`

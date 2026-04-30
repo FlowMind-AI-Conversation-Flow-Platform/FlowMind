@@ -8,6 +8,7 @@ function parseArgs(argv) {
     feature: null,
     dryRun: false,
     outputDir: 'docs/planning/exec-plans/active',
+    mode: 'overwrite',
   };
 
   const tokens = argv.slice(2);
@@ -23,6 +24,9 @@ function parseArgs(argv) {
       case '--output-dir':
         args.outputDir = tokens.shift() || args.outputDir;
         break;
+      case '--mode':
+        args.mode = tokens.shift() || args.mode;
+        break;
       case '--help':
         printHelp();
         process.exit(0);
@@ -34,6 +38,9 @@ function parseArgs(argv) {
   if (!args.feature) {
     throw new Error('Missing required option: --feature <id>');
   }
+  if (!['overwrite', 'append-notes'].includes(args.mode)) {
+    throw new Error(`Invalid --mode value: ${args.mode} (allowed: overwrite, append-notes)`);
+  }
   return args;
 }
 
@@ -44,8 +51,55 @@ function printHelp() {
 Options:
   --dry-run                  Print planned output without writing files
   --output-dir <path>        Target directory (default: docs/planning/exec-plans/active)
+  --mode <overwrite|append-notes>
+                              overwrite: regenerate full file
+                              append-notes: keep manual notes sections from existing file
   --help                     Show help
 `);
+}
+
+function splitSections(markdown) {
+  const lines = markdown.split(/\r?\n/);
+  const sections = [];
+  let currentTitle = '__TOP__';
+  let current = [];
+  for (const line of lines) {
+    if (line.startsWith('## ')) {
+      sections.push({ title: currentTitle, body: current.join('\n').trimEnd() });
+      currentTitle = line.slice(3).trim();
+      current = [];
+      continue;
+    }
+    current.push(line);
+  }
+  sections.push({ title: currentTitle, body: current.join('\n').trimEnd() });
+  return sections;
+}
+
+function mergePlanWithExisting(generatedText, existingText) {
+  const preserveTitles = new Set(['리스크', '진행 상태', '작업 단계']);
+  const generatedSections = splitSections(generatedText);
+  const existingSections = splitSections(existingText);
+  const existingMap = new Map(existingSections.map((s) => [s.title, s.body]));
+
+  const merged = generatedSections.map((section) => {
+    if (!preserveTitles.has(section.title)) return section;
+    const existingBody = existingMap.get(section.title);
+    if (!existingBody || existingBody.trim().length === 0) return section;
+    return { ...section, body: existingBody };
+  });
+
+  const lines = [];
+  for (const section of merged) {
+    if (section.title === '__TOP__') {
+      if (section.body) lines.push(section.body);
+      continue;
+    }
+    lines.push(`## ${section.title}`);
+    if (section.body) lines.push(section.body);
+    lines.push('');
+  }
+  return lines.join('\n').trimEnd();
 }
 
 function findSectionByPrefix(markdown, headingPrefix) {
@@ -159,10 +213,20 @@ async function main() {
   const outputPath = path.resolve(args.outputDir, outputFileName);
 
   const specText = await fs.readFile(specPath, 'utf8');
-  const planText = buildPlanMarkdown(args.feature, specText);
+  const generatedPlanText = buildPlanMarkdown(args.feature, specText);
+  let planText = generatedPlanText;
+
+  if (args.mode === 'append-notes') {
+    try {
+      const existing = await fs.readFile(outputPath, 'utf8');
+      planText = mergePlanWithExisting(generatedPlanText, existing);
+    } catch {
+      planText = generatedPlanText;
+    }
+  }
 
   if (args.dryRun) {
-    console.log(`DRY-RUN: ${outputPath}`);
+    console.log(`DRY-RUN: ${outputPath} (mode=${args.mode})`);
     console.log(planText);
     return;
   }
