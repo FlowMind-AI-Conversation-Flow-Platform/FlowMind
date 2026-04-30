@@ -11,6 +11,8 @@ import {
   validatePhasesStatusText,
   validatePlanningStatusMarkers,
   validateOrchestratorAutomationStatusText,
+  parseSourceSpecFromPlan,
+  validateSpecPlanningSyncPair,
 } from './orchestrator-manager.mjs';
 
 function run(name, fn) {
@@ -132,6 +134,41 @@ run('validateOrchestratorAutomationStatusText validates orchestrator status cata
   const invalid = '- 상태값: `planned`, `running`, `done`';
   assert.equal(validateOrchestratorAutomationStatusText(valid).ok, true);
   assert.equal(validateOrchestratorAutomationStatusText(invalid).ok, false);
+});
+
+run('parseSourceSpecFromPlan extracts source-spec metadata', () => {
+  const markdown = `
+# Example
+- source-spec: specs/001-demo/spec.md
+`;
+  assert.equal(parseSourceSpecFromPlan(markdown), 'specs/001-demo/spec.md');
+});
+
+run('validateSpecPlanningSyncPair validates spec/plan consistency', () => {
+  const validPlan = `
+# Plan
+- source-spec: specs/001-demo/spec.md
+`;
+  const invalidPlan = `
+# Plan
+- source-spec: specs/999-other/spec.md
+`;
+  assert.equal(
+    validateSpecPlanningSyncPair(
+      'specs/001-demo/spec.md',
+      'docs/planning/exec-plans/active/001-demo.md',
+      validPlan
+    ).ok,
+    true
+  );
+  assert.equal(
+    validateSpecPlanningSyncPair(
+      'specs/001-demo/spec.md',
+      'docs/planning/exec-plans/active/001-demo.md',
+      invalidPlan
+    ).ok,
+    false
+  );
 });
 
 console.log('All orchestrator-manager checks passed.');
