@@ -67,6 +67,9 @@ node scripts/sync-spec-to-planning.mjs --feature 001-flowmind-finance-voiceops
 
 ```powershell
 node scripts/create-pr-from-issue.mjs --base dev
+
+# spec -> planning 동기화까지 한 번에 수행
+node scripts/create-pr-from-issue.mjs --base dev --sync-feature 001-flowmind-finance-voiceops
 ```
 
 - docs/planning 문서 변경 시 strict-gate lint(링크/상태 일관성)를 통과해야 한다.

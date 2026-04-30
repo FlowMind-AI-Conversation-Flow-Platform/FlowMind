@@ -11,6 +11,7 @@ function parseArgs(argv) {
     head: null,
     title: null,
     dryRun: false,
+    syncFeature: null,
   };
 
   const tokens = argv.slice(2);
@@ -32,6 +33,9 @@ function parseArgs(argv) {
       case '--dry-run':
         args.dryRun = true;
         break;
+      case '--sync-feature':
+        args.syncFeature = tokens.shift() || null;
+        break;
       case '--help':
         printHelp();
         process.exit(0);
@@ -51,6 +55,7 @@ Options:
   --base <branch>    Base branch (default: dev)
   --head <branch>    Head branch (default: current branch)
   --title "<text>"   PR title (default: issue title)
+  --sync-feature <id>  Run spec->planning sync before PR creation
   --dry-run          Print gh command only
   --help             Show help
 `);
@@ -74,17 +79,18 @@ function buildBodyPath(issueNumber) {
   return path.join('.codex', 'orchestrator', 'pr-bodies', `issue-${issueNumber}.md`);
 }
 
-function resolveBodyArgs(issueNumber) {
+function resolveBodyArgs(issueNumber, syncedFile) {
   const bodyFile = buildBodyPath(issueNumber);
   if (fs.existsSync(bodyFile)) {
     return ['--body-file', bodyFile];
   }
+  const changedFileLine = syncedFile ? `- ${syncedFile}` : '- (자동 생성 PR body 파일이 없어 수동 보완 필요)';
   const fallbackBody = [
     '## 변경 내용',
     '- 이번 PR에서 바꾼 핵심 내용',
     '',
     '## 핸드오프: 변경 파일 목록',
-    '- (자동 생성 PR body 파일이 없어 수동 보완 필요)',
+    changedFileLine,
     '',
     '## 핸드오프: 검증 결과',
     '- (자동 생성 PR body 파일이 없어 수동 보완 필요)',
@@ -99,6 +105,13 @@ function resolveBodyArgs(issueNumber) {
   return ['--body', fallbackBody];
 }
 
+function runSpecPlanningSync(featureId) {
+  if (!featureId) return null;
+  const syncCommand = ['scripts/sync-spec-to-planning.mjs', '--feature', featureId];
+  execFileSync('node', syncCommand, { stdio: 'inherit' });
+  return `docs/planning/exec-plans/active/${featureId}.md`;
+}
+
 function main() {
   const args = parseArgs(process.argv);
   const currentBranch = gitText(['branch', '--show-current']);
@@ -111,7 +124,8 @@ function main() {
 
   const issue = ghJson(['issue', 'view', String(issueNumber), '--json', 'title']);
   const title = args.title || issue.title;
-  const bodyArgs = resolveBodyArgs(issueNumber);
+  const syncedFile = runSpecPlanningSync(args.syncFeature);
+  const bodyArgs = resolveBodyArgs(issueNumber, syncedFile);
 
   const command = [
     'pr',
@@ -126,6 +140,9 @@ function main() {
   ];
 
   if (args.dryRun) {
+    if (syncedFile) {
+      console.log(`synced planning file: ${syncedFile}`);
+    }
     console.log(`gh ${command.map((part) => (part.includes(' ') ? `"${part}"` : part)).join(' ')}`);
     return;
   }
