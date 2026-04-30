@@ -6,6 +6,7 @@ import path from 'node:path';
 function parseArgs(argv) {
   const args = {
     feature: null,
+    all: false,
     dryRun: false,
     outputDir: 'docs/planning/exec-plans/active',
     mode: 'overwrite',
@@ -17,6 +18,9 @@ function parseArgs(argv) {
     switch (token) {
       case '--feature':
         args.feature = tokens.shift() || null;
+        break;
+      case '--all':
+        args.all = true;
         break;
       case '--dry-run':
         args.dryRun = true;
@@ -35,8 +39,11 @@ function parseArgs(argv) {
     }
   }
 
-  if (!args.feature) {
-    throw new Error('Missing required option: --feature <id>');
+  if (args.feature && args.all) {
+    throw new Error('Use either --feature <id> or --all, not both.');
+  }
+  if (!args.feature && !args.all) {
+    throw new Error('Missing target option: use --feature <id> or --all');
   }
   if (!['overwrite', 'append-notes'].includes(args.mode)) {
     throw new Error(`Invalid --mode value: ${args.mode} (allowed: overwrite, append-notes)`);
@@ -46,9 +53,11 @@ function parseArgs(argv) {
 
 function printHelp() {
   console.log(`Usage:
-  node scripts/sync-spec-to-planning.mjs --feature <feature-id> [options]
+  node scripts/sync-spec-to-planning.mjs (--feature <feature-id> | --all) [options]
 
 Options:
+  --feature <feature-id>      Sync one feature
+  --all                       Sync all features under specs/*/spec.md
   --dry-run                  Print planned output without writing files
   --output-dir <path>        Target directory (default: docs/planning/exec-plans/active)
   --mode <overwrite|append-notes>
@@ -208,32 +217,57 @@ function buildPlanMarkdown(featureId, specText) {
 
 async function main() {
   const args = parseArgs(process.argv);
-  const specPath = path.resolve('specs', args.feature, 'spec.md');
-  const outputFileName = `${args.feature}.md`;
-  const outputPath = path.resolve(args.outputDir, outputFileName);
-
-  const specText = await fs.readFile(specPath, 'utf8');
-  const generatedPlanText = buildPlanMarkdown(args.feature, specText);
-  let planText = generatedPlanText;
-
-  if (args.mode === 'append-notes') {
-    try {
-      const existing = await fs.readFile(outputPath, 'utf8');
-      planText = mergePlanWithExisting(generatedPlanText, existing);
-    } catch {
-      planText = generatedPlanText;
+  const targets = [];
+  if (args.feature) {
+    targets.push(args.feature);
+  } else {
+    const specsRoot = path.resolve('specs');
+    const entries = await fs.readdir(specsRoot, { withFileTypes: true });
+    for (const entry of entries) {
+      if (!entry.isDirectory()) continue;
+      const specPath = path.resolve(specsRoot, entry.name, 'spec.md');
+      try {
+        await fs.access(specPath);
+        targets.push(entry.name);
+      } catch {
+        // skip directories without spec.md
+      }
     }
+    targets.sort();
   }
 
-  if (args.dryRun) {
-    console.log(`DRY-RUN: ${outputPath} (mode=${args.mode})`);
-    console.log(planText);
-    return;
+  if (targets.length === 0) {
+    throw new Error('No spec targets found.');
   }
 
-  await fs.mkdir(path.dirname(outputPath), { recursive: true });
-  await fs.writeFile(outputPath, `${planText}\n`, 'utf8');
-  console.log(`Created: ${outputPath}`);
+  for (const featureId of targets) {
+    const specPath = path.resolve('specs', featureId, 'spec.md');
+    const outputFileName = `${featureId}.md`;
+    const outputPath = path.resolve(args.outputDir, outputFileName);
+
+    const specText = await fs.readFile(specPath, 'utf8');
+    const generatedPlanText = buildPlanMarkdown(featureId, specText);
+    let planText = generatedPlanText;
+
+    if (args.mode === 'append-notes') {
+      try {
+        const existing = await fs.readFile(outputPath, 'utf8');
+        planText = mergePlanWithExisting(generatedPlanText, existing);
+      } catch {
+        planText = generatedPlanText;
+      }
+    }
+
+    if (args.dryRun) {
+      console.log(`DRY-RUN: ${outputPath} (mode=${args.mode})`);
+      console.log(planText);
+      continue;
+    }
+
+    await fs.mkdir(path.dirname(outputPath), { recursive: true });
+    await fs.writeFile(outputPath, `${planText}\n`, 'utf8');
+    console.log(`Created: ${outputPath}`);
+  }
 }
 
 main().catch((error) => {

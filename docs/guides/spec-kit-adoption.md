@@ -61,6 +61,10 @@ node scripts/sync-spec-to-planning.mjs --feature 001-flowmind-finance-voiceops -
 # 파일 생성
 node scripts/sync-spec-to-planning.mjs --feature 001-flowmind-finance-voiceops
 
+# 전체 spec 일괄 동기화
+node scripts/sync-spec-to-planning.mjs --all --dry-run
+node scripts/sync-spec-to-planning.mjs --all
+
 # 수동 노트 보존 모드(리스크/진행 상태/작업 단계 유지)
 node scripts/sync-spec-to-planning.mjs --feature 001-flowmind-finance-voiceops --mode append-notes
 ```
