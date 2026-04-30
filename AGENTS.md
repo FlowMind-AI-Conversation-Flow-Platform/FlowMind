@@ -53,3 +53,8 @@ FlowMind 저장소의 AI 작업 진입점 문서다. 상세 규칙은 연결된 
 - 하위 에이전트의 자의적 범위 확장 금지
 - 보안/설정 경계 파일 무단 수정 금지
 - 테스트 실패 상태에서 완료 처리 금지
+
+<!-- SPECKIT START -->
+For additional context about technologies to be used, project structure,
+shell commands, and other important information, read the current plan
+<!-- SPECKIT END -->
